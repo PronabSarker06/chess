@@ -14,3 +14,7 @@ int Position::getCol() {
 int Position::getRow() { 
     return this->row;
 }
+
+bool Position::operator== (Position& other) {
+    return row == other.row && col == other.col;
+}
