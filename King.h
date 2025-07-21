@@ -6,7 +6,7 @@
 
 class King : public Piece { 
     public:
-        King(char, Position);
+        King(char, Position, Board*);
         bool canMove(Move) override;
         std::vector<Move> getLegalMoves() override;
 };

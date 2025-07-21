@@ -6,7 +6,7 @@
 
 class Bishop : public Piece { 
     public:
-        Bishop(char, Position);
+        Bishop(char, Position, Board*);
         bool canMove(Move) override;
         std::vector<Move> getLegalMoves() override;
 };

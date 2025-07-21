@@ -1,8 +1,8 @@
 #include "Rook.h"
 #include "Move.h"
 
-Rook::Rook(char c, Position p) 
-    : Piece(c, 'r', p) {}
+Rook::Rook(char c, Position p, Board* bptr) 
+    : Piece(c, 'r', p, bptr) {}
 
 bool Rook::canMove(Move) {
 

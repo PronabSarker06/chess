@@ -9,13 +9,13 @@ class Move {
 
     Position from;
     Position to;
-    Piece& pieceMoved;
-    Piece& pieceCaptured;
+    Piece* pieceMoved;
+    Piece* pieceCaptured;
     char promotionType;
 
     public:
 
-        Move(Position from, Position to, Piece& pieceMoved, Piece& pieceCaptured, char promoType);
+        Move(Position from, Position to, Piece* pieceMoved, Piece* pieceCaptured, char promoType);
 
 };
 

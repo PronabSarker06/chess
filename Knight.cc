@@ -1,8 +1,8 @@
 #include "Knight.h"
 #include "Move.h"
 
-Knight::Knight(char c, Position p) 
-    : Piece(c, 'n', p) {}
+Knight::Knight(char c, Position p, Board* bptr) 
+    : Piece(c, 'n', p, bptr) {}
 
 bool Knight::canMove(Move) {
 

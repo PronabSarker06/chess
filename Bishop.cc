@@ -1,8 +1,8 @@
 #include "Bishop.h"
 #include "Move.h"
 
-Bishop::Bishop(char c, Position p) 
-    : Piece(c, 'b', p) {}
+Bishop::Bishop(char c, Position p, Board* bptr) 
+    : Piece(c, 'b', p, bptr) {}
 
 bool Bishop::canMove(Move) {
 

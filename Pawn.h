@@ -8,7 +8,7 @@
 
 class Pawn : public Piece { 
     public:
-        Pawn(char, Position);
+        Pawn(char, Position, Board*);
         void promote();
         bool canMove(Move) override;
         std::vector<Move> getLegalMoves() override;

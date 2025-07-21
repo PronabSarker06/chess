@@ -1,8 +1,8 @@
 #include "Queen.h"
 #include "Move.h"
 
-Queen::Queen(char c, Position p) 
-    : Piece(c, 'q', p) {}
+Queen::Queen(char c, Position p, Board* bptr) 
+    : Piece(c, 'q', p, bptr) {}
 
 bool Queen::canMove(Move) {
 

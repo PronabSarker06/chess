@@ -5,6 +5,7 @@
 #include <vector>
 
 class Move; //Forward declaration
+class Board;
 
 class Piece {
     protected:
@@ -12,6 +13,7 @@ class Piece {
         char type;
         bool hasMoved;
         Position position;
+        Board* bptr;
 
     public:
     
@@ -19,7 +21,7 @@ class Piece {
         virtual bool canMove(Move) = 0;
         virtual std::vector<Move> getLegalMoves() = 0;
 
-        Piece(char c, char t, Position p);
+        Piece(char c, char t, Position p, Board* bptr);
         ~Piece() = default;
         Position getPosition();
         char getType();
