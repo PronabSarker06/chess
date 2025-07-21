@@ -10,7 +10,7 @@ const char preset[BOARD_SIZE] {
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-    'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R', // row 1
+    'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R', // row 1
 };
 
 Board::Board() { 
@@ -96,10 +96,18 @@ void Board::display() {
 
 }
 
+bool inLegalMoves(const Move m, Piece* p) { 
+    std::vector<Move> legalMoves = p->getLegalMoves();
+    for (int i = 0; i < (int) legalMoves.size(); ++i) { 
+        if (m == legalMoves[i]) return true;
+    }
+    return false;
+}
+
 void Board::makeMove(Move m) {
 
   if (getPieceAt(m.getFrom())) {
-    if (inLegalMoves(m, getPieceAt(m.getFrom())->getLegalMoves())) {
+    if (inLegalMoves(m, getPieceAt(m.getFrom()))) {
       for (auto &piece : grid) {
         if (piece.get() == m.getPieceMoved()) {
           piece.get()->modPos(m.getTo());
@@ -116,16 +124,9 @@ void Board::makeMove(Move m) {
   }
 }
 
-bool inLegalMoves(Move m, std::vector<Move> legalMoves) { 
-    for (int i = 0; i < legalMoves.size(); ++i) { 
-        if (m == legalMoves[i]) return true;
-    }
-    return false;
-}
-
 Piece* Board::getPieceAt(const Position pos) {
     for (const auto& piece : grid) {
-        std::cout << piece.get()->getPosition() << ' ' << pos << '\n';
+        //std::cout << piece.get()->getPosition() << ' ' << pos << '\n';
         if (piece.get()->getPosition() == pos) {
             return piece.get(); 
         }
