@@ -21,6 +21,9 @@ class Piece {
 
         Piece(char c, char t, Position p);
         ~Piece() = default;
+        Position getPosition();
+        char getType();
+        char getColour();
 
 };
 
