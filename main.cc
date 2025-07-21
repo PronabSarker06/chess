@@ -19,6 +19,15 @@ int main () {
 
     B.display();
 
+    std::vector<std::unique_ptr<Piece>>& g = B.getGrid();
+    for (auto& p: g) {
+        std::cout << p.get()->getPosition().getCol() << ' ';
+    } std::cout << '\n';
+
+    B.makeMove(B.getGrid()[16].get()->getLegalMoves()[1]);
+
+    B.display();
+
     return 0;
 
 }

@@ -22,22 +22,22 @@ Board::Board() {
             continue;
         }
         else if (preset[i] == 'p' || preset[i] == 'P') { 
-            grid.push_back(std::make_unique<Pawn>((preset[i] == 'p' ? 'w' : 'b'), Position{i/8, i%8}, this));
+            grid.push_back(std::make_unique<Pawn>((preset[i] == 'p' ? 'w' : 'b'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'n' || preset[i] == 'N') { 
-            grid.push_back(std::make_unique<Knight>((preset[i] == 'n' ? 'w' : 'b'), Position{i/8, i%8}, this));
+            grid.push_back(std::make_unique<Knight>((preset[i] == 'n' ? 'w' : 'b'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'b' || preset[i] == 'B') { 
-            grid.push_back(std::make_unique<Bishop>((preset[i] == 'b' ? 'w' : 'b'), Position{i/8, i%8}, this));
+            grid.push_back(std::make_unique<Bishop>((preset[i] == 'b' ? 'w' : 'b'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'r' || preset[i] == 'R') { 
-            grid.push_back(std::make_unique<Rook>((preset[i] == 'r' ? 'w' : 'b'), Position{i/8, i%8}, this));
+            grid.push_back(std::make_unique<Rook>((preset[i] == 'r' ? 'w' : 'b'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'q' || preset[i] == 'Q') { 
-            grid.push_back(std::make_unique<Queen>((preset[i] == 'q' ? 'w' : 'b'), Position{i/8, i%8}, this));
+            grid.push_back(std::make_unique<Queen>((preset[i] == 'q' ? 'w' : 'b'), Position{i%8, i/8}, this));
         }
         else { 
-            grid.push_back(std::make_unique<King>((preset[i] == 'k' ? 'w' : 'b'), Position{i/8, i%8}, this));
+            grid.push_back(std::make_unique<King>((preset[i] == 'k' ? 'w' : 'b'), Position{i%8, i/8}, this));
         }
     }
 }
@@ -73,6 +73,9 @@ void Board::display() {
 void Board::display() {
 
     for (int i = 0; i < 8; i++) {
+
+        std::cout << 8 - i << ' '; //side numbers
+
         for (int j = 0; j < 8; j++) {
             if (displayGrid[i * 8 + j] == '0'){
                 std::cout << ((i + j) % 2 == 0 ? ' ' : '_') << ' ';
@@ -81,8 +84,15 @@ void Board::display() {
                 std::cout << displayGrid[i * 8 + j] << ' ';
             }
         }
+
         std::cout << '\n';
+
     }
+
+    std::cout << "  ";
+    for (char c = 'a'; c <= 'h'; c++){
+        std::cout << c << ' ';
+    } std::cout << std::endl;
 
 }
 
