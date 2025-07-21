@@ -17,3 +17,7 @@ Position Move::getTo() {
 Position Move::getFrom() { 
     return this->from;
 }
+
+bool Move::operator==(Move& o) const { 
+    return (from == o.from && to == o.to && pieceCaptured == o.pieceCaptured && pieceMoved == o.pieceMoved && promotionType == o.promotionType);
+}

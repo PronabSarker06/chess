@@ -18,6 +18,7 @@ class Move {
         Piece* getPieceMoved();
         Position getTo();
         Position getFrom();
+        bool operator==(Move& o) const;
 
 };
 
