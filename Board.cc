@@ -9,8 +9,8 @@ const char preset[BOARD_SIZE] {
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
-    'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
-    'r', 'n', 'b', 'k', 'q', 'b', 'n', 'r', // row 8
+    'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
+    'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R', // row 8
 };
 
 Board::Board() { 
@@ -21,23 +21,23 @@ Board::Board() {
         if (preset[i] == '0') { 
             continue;
         }
-        else if (preset[i] == 'p') { 
-            grid.push_back(std::make_unique<Pawn>((i < 16 ? 'w' : 'b'), Position{i/8, i%8}));
+        else if (preset[i] == 'p' || preset[i] == 'P') { 
+            grid.push_back(std::make_unique<Pawn>((preset[i] == 'p' ? 'w' : 'b'), Position{i/8, i%8}, this));
         }
-        else if (preset[i] == 'n') { 
-            grid.push_back(std::make_unique<Knight>((i < 16 ? 'w' : 'b'), Position{i/8, i%8}));
+        else if (preset[i] == 'n' || preset[i] == 'N') { 
+            grid.push_back(std::make_unique<Knight>((preset[i] == 'n' ? 'w' : 'b'), Position{i/8, i%8}, this));
         }
-        else if (preset[i] == 'b') { 
-            grid.push_back(std::make_unique<Bishop>((i < 16 ? 'w' : 'b'), Position{i/8, i%8}));
+        else if (preset[i] == 'b' || preset[i] == 'B') { 
+            grid.push_back(std::make_unique<Bishop>((preset[i] == 'b' ? 'w' : 'b'), Position{i/8, i%8}, this));
         }
-        else if (preset[i] == 'r') { 
-            grid.push_back(std::make_unique<Rook>((i < 16 ? 'w' : 'b'), Position{i/8, i%8}));
+        else if (preset[i] == 'r' || preset[i] == 'R') { 
+            grid.push_back(std::make_unique<Rook>((preset[i] == 'r' ? 'w' : 'b'), Position{i/8, i%8}, this));
         }
-        else if (preset[i] == 'q') { 
-            grid.push_back(std::make_unique<Queen>((i < 16 ? 'w' : 'b'), Position{i/8, i%8}));
+        else if (preset[i] == 'q' || preset[i] == 'Q') { 
+            grid.push_back(std::make_unique<Queen>((preset[i] == 'q' ? 'w' : 'b'), Position{i/8, i%8}, this));
         }
         else { 
-            grid.push_back(std::make_unique<King>((i < 16 ? 'w' : 'b'), Position{i/8, i%8}));
+            grid.push_back(std::make_unique<King>((preset[i] == 'k' ? 'w' : 'b'), Position{i/8, i%8}, this));
         }
     }
 }
@@ -77,8 +77,8 @@ void Board::display() {
             if (displayGrid[i * 8 + j] == '0'){
                 std::cout << ((i + j) % 2 == 0 ? ' ' : '_') << ' ';
             }
-            else{
-                std::cout << displayGrid[i * 8 + j];
+            else {
+                std::cout << displayGrid[i * 8 + j] << ' ';
             }
         }
         std::cout << '\n';
