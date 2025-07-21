@@ -3,14 +3,14 @@
 #define BOARD_SIZE 64
 
 const char preset[BOARD_SIZE] {
-    'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 1
+    'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 8
     'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-    'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R', // row 8
+    'R', 'N', 'B', 'K', 'Q', 'B', 'N', 'R', // row 1
 };
 
 Board::Board() { 
@@ -22,22 +22,22 @@ Board::Board() {
             continue;
         }
         else if (preset[i] == 'p' || preset[i] == 'P') { 
-            grid.push_back(std::make_unique<Pawn>((preset[i] == 'p' ? 'w' : 'b'), Position{i%8, i/8}, this));
+            grid.push_back(std::make_unique<Pawn>((preset[i] == 'p' ? 'b' : 'w'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'n' || preset[i] == 'N') { 
-            grid.push_back(std::make_unique<Knight>((preset[i] == 'n' ? 'w' : 'b'), Position{i%8, i/8}, this));
+            grid.push_back(std::make_unique<Knight>((preset[i] == 'n' ? 'b' : 'w'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'b' || preset[i] == 'B') { 
-            grid.push_back(std::make_unique<Bishop>((preset[i] == 'b' ? 'w' : 'b'), Position{i%8, i/8}, this));
+            grid.push_back(std::make_unique<Bishop>((preset[i] == 'b' ? 'b' : 'w'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'r' || preset[i] == 'R') { 
-            grid.push_back(std::make_unique<Rook>((preset[i] == 'r' ? 'w' : 'b'), Position{i%8, i/8}, this));
+            grid.push_back(std::make_unique<Rook>((preset[i] == 'r' ? 'b' : 'w'), Position{i%8, i/8}, this));
         }
         else if (preset[i] == 'q' || preset[i] == 'Q') { 
-            grid.push_back(std::make_unique<Queen>((preset[i] == 'q' ? 'w' : 'b'), Position{i%8, i/8}, this));
+            grid.push_back(std::make_unique<Queen>((preset[i] == 'q' ? 'b' : 'w'), Position{i%8, i/8}, this));
         }
         else { 
-            grid.push_back(std::make_unique<King>((preset[i] == 'k' ? 'w' : 'b'), Position{i%8, i/8}, this));
+            grid.push_back(std::make_unique<King>((preset[i] == 'k' ? 'b' : 'w'), Position{i%8, i/8}, this));
         }
     }
 }
