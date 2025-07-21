@@ -10,23 +10,29 @@
 #include "King.h"
 #include "Game.h"
 #include <iostream>
+#include <algorithm>
 
 int main () {
 
     std::cout << "Chess\n";
 
     Board B;
+    char fCol, tCol;
+    int fRow, tRow;
+    while (std::cin >> fCol >> fRow >> tCol >> tRow) { 
+        Position f = {fCol - 'a', fRow};
+        Position t = {tCol - 'a', tRow};
 
-    B.display();
+        Piece* p = B.getPieceAt(f);
+        if (p != nullptr) {
+            std::cout << "No piece located there." << std::endl;
+            break;
+        } else { 
+            B.makeMove({f, t, p, nullptr, '0'});
+        }
 
-    std::vector<std::unique_ptr<Piece>>& g = B.getGrid();
-    for (auto& p: g) {
-        std::cout << p.get()->getPosition().getCol() << ' ';
-    } std::cout << '\n';
-
-    B.makeMove(B.getGrid()[16].get()->getLegalMoves()[1]);
-
-    B.display();
+        B.display();
+    }
 
     return 0;
 

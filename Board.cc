@@ -107,3 +107,12 @@ void Board::makeMove(Move m) {
     }
 
 }
+
+Piece* Board::getPieceAt(Position pos) {
+    for (const auto& piece : grid) {
+        if (piece->getPosition() == pos) {
+            return piece.get(); 
+        }
+    }
+    return nullptr; 
+}

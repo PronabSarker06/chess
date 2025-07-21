@@ -30,6 +30,7 @@ class Board {
         bool passantable(Pawn& p);
         void castle(King &k, Rook &r);
         std::vector<std::unique_ptr<Piece>>& getGrid () { return grid; }
+        Piece* Board::getPieceAt(Position pos);
 };
 
 #endif
