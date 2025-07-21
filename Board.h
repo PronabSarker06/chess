@@ -18,6 +18,7 @@
 class Board { 
 
     std::vector<std::unique_ptr<Piece>> grid;
+    std::vector<char> displayGrid; 
     bool whiteInCheck, blackInCheck;
 
     public:

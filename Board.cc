@@ -15,6 +15,9 @@ const char preset[BOARD_SIZE] {
 
 Board::Board() { 
     for (int i = 0; i < BOARD_SIZE; ++i) {
+
+        displayGrid.push_back( preset[i] );
+
         if (preset[i] == '0') { 
             continue;
         }
@@ -39,6 +42,7 @@ Board::Board() {
     }
 }
 
+/*
 void Board::display() {
   for (int r = 0; r < 8; ++r) {
     std::cout << 8 - r << " ";
@@ -63,4 +67,21 @@ void Board::display() {
 
     std::cout << std::endl;
   }
+}
+*/
+
+void Board::display() {
+
+    for (int i = 0; i < 8; i++) {
+        for (int j = 0; j < 8; j++) {
+            if (displayGrid[i * 8 + j] == '0'){
+                std::cout << ((i + j) % 2 == 0 ? ' ' : '_') << ' ';
+            }
+            else{
+                std::cout << displayGrid[i * 8 + j];
+            }
+        }
+        std::cout << '\n';
+    }
+
 }
