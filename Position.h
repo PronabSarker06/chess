@@ -1,3 +1,6 @@
+#include <iostream>
+
+
 #ifndef POSITION_H
 #define POSITION_H
 
@@ -11,9 +14,12 @@ class Position {
         
         Position(int _col, int _row);
         int to1D();
-        int getCol();
-        int getRow();
+        int getCol() const;
+        int getRow() const;
         bool operator== (const Position& other);
+        bool valid();
+
+        friend std::ostream& operator<< (std::ostream& out, const Position& pos);
 
 };
 
