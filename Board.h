@@ -20,6 +20,7 @@ class Board {
     bool whiteInCheck, blackInCheck;
 
     public:
+        Board();
         bool isCheckmate();
         bool isStalemate();
         void makeMove(Move m);

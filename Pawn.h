@@ -3,6 +3,8 @@
 
 #include "Position.h"
 #include "Piece.h"
+#include "Move.h"
+#include <vector>
 
 class Pawn : public Piece { 
     public:

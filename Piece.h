@@ -20,6 +20,7 @@ class Piece {
         virtual std::vector<Move> getLegalMoves() = 0;
 
         Piece(char c, char t, Position p);
+        ~Piece() = default;
 
 };
 
