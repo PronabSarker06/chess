@@ -1,6 +1,8 @@
 #include "Board.h"
 
-const char preset[64] {
+#define BOARD_SIZE 64
+
+const char preset[BOARD_SIZE] {
     'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 1
     'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
     '0', '0', '0', '0', '0', '0', '0', '0',
@@ -12,7 +14,7 @@ const char preset[64] {
 };
 
 Board::Board() { 
-    for (int i = 0; i < 64; ++i) {
+    for (int i = 0; i < BOARD_SIZE; ++i) {
         if (preset[i] == '0') { 
             continue;
         }
@@ -38,5 +40,7 @@ Board::Board() {
 }
 
 void Board::display() { 
-    
+    for (int i = 0; i < BOARD_SIZE; ++i) { 
+        
+    }
 }

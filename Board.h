@@ -1,3 +1,6 @@
+#ifndef BOARD_H
+#define BOARD_H
+
 #include "Piece.h"
 #include "Move.h"
 
@@ -24,3 +27,5 @@ class Board {
         bool passantable(Pawn& p);
         void castle(King &k, Rook &r);
 };
+
+#endif
