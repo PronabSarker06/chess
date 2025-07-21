@@ -11,6 +11,8 @@ class Position {
         
         Position(int _col, int _row);
         int to1D();
+        int getCol();
+        int getRow();
 
 };
 

@@ -39,8 +39,28 @@ Board::Board() {
     }
 }
 
-void Board::display() { 
-    for (int i = 0; i < BOARD_SIZE; ++i) { 
-        
+void Board::display() {
+  for (int r = 0; r < 8; ++r) {
+    std::cout << 8 - r << " ";
+    for (int c = 0; c < 8; ++c) {
+      bool found = false;
+
+      for (const auto &piece : grid) {
+
+        if (piece->getPosition().getRow() == r && piece->getPosition().getCol() == c) {
+            char c = piece->getType();
+
+            if (piece->getColour() == 'b') std::cout << std::toupper(c) << ' ';
+            else std::cout << c << ' ';
+
+            found = true;
+            break;
+        }
+
+      }
+      if (!found) std::cout << ((r + c) % 2 == 0 ? ' ' : '_') << ' ';
     }
+
+    std::cout << std::endl;
+  }
 }
