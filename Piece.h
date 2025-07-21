@@ -28,6 +28,7 @@ class Piece {
         char getType();
         char getColour();
 
+        void setMoved();
         void modPos(Position p);
 
 };

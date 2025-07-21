@@ -98,18 +98,18 @@ void Board::display() {
 
 bool inLegalMoves(const Move m, Piece* p) { 
     std::vector<Move> legalMoves = p->getLegalMoves();
-    for (int i = 0; i < (int) legalMoves.size(); ++i) { 
+    for (int i = 0; i < (int) legalMoves.size(); ++i) {
         if (m == legalMoves[i]) return true;
     }
     return false;
 }
 
 void Board::makeMove(Move m) {
-
   if (getPieceAt(m.getFrom())) {
     if (inLegalMoves(m, getPieceAt(m.getFrom()))) {
       for (auto &piece : grid) {
         if (piece.get() == m.getPieceMoved()) {
+            piece->setMoved();
           piece.get()->modPos(m.getTo());
           displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
           displayGrid[m.getFrom().to1D()] = '0';
@@ -118,9 +118,11 @@ void Board::makeMove(Move m) {
     }
     else { 
         std::cout << "Not a valid move." << std::endl;
+        return;
     }
   } else {
     std::cout << "No piece located." << std::endl;
+    return;
   }
 }
 

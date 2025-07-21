@@ -11,6 +11,10 @@ Position Piece::getPosition() {
     return this->position;
 }
 
+void Piece::setMoved() { 
+    hasMoved = true;
+}
+
 char Piece::getType() { 
     return this->type;
 }
