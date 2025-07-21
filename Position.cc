@@ -7,14 +7,23 @@ int Position::to1D () {
     return row * 8 + col; //a row is 8 cols, space accordingly in 1D
 }
 
-int Position::getCol() { 
+int Position::getCol() const { 
     return this->col;
 }
 
-int Position::getRow() { 
+int Position::getRow() const { 
     return this->row;
 }
 
 bool Position::operator== (const Position& other) {
     return row == other.row && col == other.col;
+}
+
+bool Position::valid() {
+    return this->to1D() >= 0 && this->to1D() < 64;
+}
+
+std::ostream& operator<< (std::ostream& out, const Position& pos){
+    out << pos.getCol() << ' ' << pos.getRow();
+    return out;
 }
