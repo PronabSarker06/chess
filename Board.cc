@@ -85,3 +85,15 @@ void Board::display() {
     }
 
 }
+
+void Board::makeMove(Move m) { 
+
+    for (auto &piece : grid) { 
+        if (piece.get() == m.getPieceMoved()) { 
+            piece.get()->modPos(m.getTo());
+            displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
+            displayGrid[m.getFrom().to1D()] = '0';
+        }
+    }
+
+}

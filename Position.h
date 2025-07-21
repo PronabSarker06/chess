@@ -13,7 +13,7 @@ class Position {
         int to1D();
         int getCol();
         int getRow();
-        bool operator== (Position& other);
+        bool operator== (const Position& other);
 
 };
 

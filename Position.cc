@@ -15,6 +15,6 @@ int Position::getRow() {
     return this->row;
 }
 
-bool Position::operator== (Position& other) {
+bool Position::operator== (const Position& other) {
     return row == other.row && col == other.col;
 }

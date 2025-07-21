@@ -23,9 +23,12 @@ class Piece {
 
         Piece(char c, char t, Position p, Board* bptr);
         ~Piece() = default;
+        bool operator==(const Piece& o);
         Position getPosition();
         char getType();
         char getColour();
+
+        void modPos(Position p);
 
 };
 
