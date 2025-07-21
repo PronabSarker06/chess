@@ -14,7 +14,7 @@ class Move {
     char promotionType;
 
     public:
-        Move(Position from, Position to, Piece* pieceMoved, Piece* pieceCaptured, char promoType);
+        Move(Position from, Position to, Piece* pieceMoved, Piece* pieceCaptured = nullptr, char promoType = '0');
         Piece* getPieceMoved();
         Position getTo();
         Position getFrom();
