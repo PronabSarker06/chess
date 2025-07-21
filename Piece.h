@@ -7,17 +7,19 @@
 class Move; //Forward declaration
 
 class Piece {
-
-    char colour;
-    char type;
-    bool hasMoved;
-    Position position;
+    protected:
+        char colour;
+        char type;
+        bool hasMoved;
+        Position position;
 
     public:
     
         //Pure virtual methods
         virtual bool canMove(Move) = 0;
         virtual std::vector<Move> getLegalMoves() = 0;
+
+        Piece(char c, char t, Position p);
 
 };
 
