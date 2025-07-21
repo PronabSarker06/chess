@@ -1,6 +1,6 @@
 #include "King.h"
 #include "Move.h"
-
+#include "Board.h"
 
 King::King(char c, Position p, Board* bptr) 
     : Piece(c, 'k', p, bptr) {}
