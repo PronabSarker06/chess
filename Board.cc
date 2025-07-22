@@ -78,6 +78,8 @@ void Board::initGraphics() {
     int tileWidth = boardSize / 8;
     int tileHeight = boardSize / 8;
 
+    graphicDisplay.fillRectangle(0, 0, windowWidth, windowHeight, 7);
+
     for (int i = 0; i < 8; i++) {
 
         //Side numbers
@@ -161,7 +163,7 @@ bool Board::makeMove(Move m) {
         grid.erase(it);
     }
 
-    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getRow() - m.getTo().getRow()) > 1) { //segfault 
+    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getCol() - m.getTo().getCol()) > 1) { //segfault 
         Position oldPos = {0, 0};
         Position newPos = {0, 0};
         if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
