@@ -29,6 +29,7 @@ class Board {
         void display();
         bool passantable(Pawn& p);
         void castle(King &k, Rook &r);
+        bool isAttacked(Position square, char enemy_colour);
         std::vector<std::unique_ptr<Piece>>& getGrid () { return grid; }
         Piece* getPieceAt(const Position pos);
         std::vector<char>& getDisplayGrid();
