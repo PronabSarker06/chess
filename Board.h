@@ -25,7 +25,7 @@ class Board {
         Board();
         bool isCheckmate(char colour);
         bool isStalemate();
-        void makeMove(Move m);
+        bool makeMove(Move m);
         void display();
         bool passantable(Pawn& p);
         void castle(King &k, Rook &r);

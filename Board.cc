@@ -104,8 +104,8 @@ bool inLegalMoves(const Move m, Piece* p) {
     return false;
 }
 
-void Board::makeMove(Move m) {
-  if (getPieceAt(m.getFrom())) {
+bool Board::makeMove(Move m) {
+
     if (inLegalMoves(m, getPieceAt(m.getFrom()))) {
       for (auto &piece : grid) {
         if (piece.get() == m.getPieceMoved()) {
@@ -125,18 +125,16 @@ void Board::makeMove(Move m) {
 
             displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
             displayGrid[m.getFrom().to1D()] = '0';
+            return true;
             
         }
       }
     }
     else { 
         std::cout << "Not a valid move." << std::endl;
-        return;
+        return false;
     }
-  } else {
-    std::cout << "No piece located." << std::endl;
-    return;
-  }
+
 }
 
 void Board::castle(King &k, Rook &r) {
