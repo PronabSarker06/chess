@@ -20,6 +20,7 @@ int main () {
     B.display();
     char fCol, tCol;
     int fRow, tRow;
+    char whose_turn = 'w';
     while (std::cin >> fCol >> fRow >> tCol >> tRow) { 
         //Make 0 indexing
         fRow--;
@@ -31,8 +32,15 @@ int main () {
         Piece* p = B.getPieceAt(f);
         if (p == nullptr) {
             std::cout << "No piece located there." << std::endl;
+        } else if (p->getColour() != whose_turn) {
+            std::cout << "Cannot move your enemy's pieces." << std::endl;
         } else { 
             B.makeMove({f, t, p, B.getPieceAt(t), '0'});
+            if (whose_turn == 'w') {
+                whose_turn = 'b';
+            } else {
+                whose_turn = 'w';
+            }
         }
 
         B.display();
