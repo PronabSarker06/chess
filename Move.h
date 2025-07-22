@@ -21,6 +21,7 @@ class Move {
         Piece* getCap();
         char getPromoType();
         bool operator==(Move& o) const;
+        friend std::ostream& operator<< (std::ostream& out, const Move& m);
 
 };
 

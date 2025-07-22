@@ -65,10 +65,10 @@ std::vector<Move> Pawn::getLegalMoves() {
     Piece* p = bptr->getPieceAt(clpos);
     if (p && p->getColour() != colour) {
         if (position.getRow() == (colour == 'b' ? 6 : 1)) {
-            Move knightPromo = {position, clpos, this, nullptr, 'n'}; // promo moves
-            Move bishopPromo = {position, clpos, this, nullptr, 'b'}; 
-            Move rookPromo = {position, clpos, this, nullptr, 'r'}; 
-            Move queenPromo = {position, clpos, this, nullptr, 'q'}; 
+            Move knightPromo = {position, clpos, this, p, 'n'}; // promo moves
+            Move bishopPromo = {position, clpos, this, p, 'b'}; 
+            Move rookPromo = {position, clpos, this, p, 'r'}; 
+            Move queenPromo = {position, clpos, this, p, 'q'}; 
 
             result.emplace_back(knightPromo);
             result.emplace_back(bishopPromo);
@@ -85,10 +85,10 @@ std::vector<Move> Pawn::getLegalMoves() {
     p = bptr->getPieceAt(crpos);
     if (p && p->getColour() != colour) {
         if (position.getRow() == (colour == 'b' ? 6 : 1)) {
-            Move knightPromo = {position, crpos, this, nullptr, 'n'}; // promo moves
-            Move bishopPromo = {position, crpos, this, nullptr, 'b'}; 
-            Move rookPromo = {position, crpos, this, nullptr, 'r'}; 
-            Move queenPromo = {position, crpos, this, nullptr, 'q'}; 
+            Move knightPromo = {position, crpos, this, p, 'n'}; // promo moves
+            Move bishopPromo = {position, crpos, this, p, 'b'}; 
+            Move rookPromo = {position, crpos, this, p, 'r'}; 
+            Move queenPromo = {position, crpos, this, p, 'q'}; 
 
             result.emplace_back(knightPromo);
             result.emplace_back(bishopPromo);

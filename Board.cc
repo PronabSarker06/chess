@@ -4,7 +4,7 @@
 
 const char preset[BOARD_SIZE] {
     'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 8
-    'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
+    'p', 'p', 'P', 'p', 'p', 'p', 'p', 'p',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
@@ -124,6 +124,7 @@ bool Board::makeMove(Move m) {
             }
 
             if (m.getPromoType() != '0') { 
+
                 // Promote the pawn
                 char colour = piece->getColour();
                 Position pos = piece->getPosition();
@@ -149,9 +150,12 @@ bool Board::makeMove(Move m) {
                     }
                 }
             }
+            else{
+                displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
+            }
 
-            displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
             displayGrid[m.getFrom().to1D()] = '0';
+            
             return true;
             
         }

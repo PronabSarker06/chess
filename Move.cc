@@ -29,3 +29,8 @@ Piece* Move::getCap() {
 char Move::getPromoType() { 
     return promotionType;
 }
+
+std::ostream& operator<< (std::ostream& out, const Move& m) {
+    out << "Move: " << m.from << ", " << m.to << ", " << m.promotionType;
+    return out;
+}
