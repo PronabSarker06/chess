@@ -124,7 +124,6 @@ bool Board::makeMove(Move m) {
     }
 
     //Update piece info
-    m.getPieceMoved()->setMoved();
     m.getPieceMoved()->modPos(m.getTo());
     displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
 
@@ -137,6 +136,28 @@ bool Board::makeMove(Move m) {
             }
         }
         grid.erase(it);
+    }
+
+    if (m.getPieceMoved()->getType() == 'k' && !m.getPieceMoved()->getHasMoved()) { //segfault 
+        Position oldPos = {0, 0};
+        Position newPos = {0, 0};
+        if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
+            newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
+            oldPos = {m.getTo().getCol() - 1, m.getTo().getRow()};
+        }
+        else { // queen
+            newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
+            oldPos = {m.getTo().getCol() - 2, m.getTo().getRow()};
+        }
+
+        std::cout << oldPos << " " << newPos << std::endl;
+
+        Piece* r = getPieceAt(oldPos);
+
+        r->modPos(newPos);
+        r->setMoved();
+        displayGrid[newPos.to1D()] = displayGrid[oldPos.to1D()];
+        displayGrid[oldPos.to1D()] = '0';
     }
 
     // 4) Handle promotion
@@ -170,6 +191,7 @@ bool Board::makeMove(Move m) {
 
     // Clear the origin square
     displayGrid[m.getFrom().to1D()] = '0';
+    m.getPieceMoved()->setMoved();
 
     return true;
 
