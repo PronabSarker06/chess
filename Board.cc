@@ -42,34 +42,6 @@ Board::Board() {
     }
 }
 
-/*
-void Board::display() {
-  for (int r = 0; r < 8; ++r) {
-    std::cout << 8 - r << " ";
-    for (int c = 0; c < 8; ++c) {
-      bool found = false;
-
-      for (const auto &piece : grid) {
-
-        if (piece->getPosition().getRow() == r && piece->getPosition().getCol() == c) {
-            char c = piece->getType();
-
-            if (piece->getColour() == 'b') std::cout << std::toupper(c) << ' ';
-            else std::cout << c << ' ';
-
-            found = true;
-            break;
-        }
-
-      }
-      if (!found) std::cout << ((r + c) % 2 == 0 ? ' ' : '_') << ' ';
-    }
-
-    std::cout << std::endl;
-  }
-}
-*/
-
 void Board::display() {
 
     for (int i = 0; i < 8; i++) {
@@ -127,20 +99,20 @@ bool Board::makeMove(Move m) {
 
                 // Promote the pawn
                 char colour = piece->getColour();
-                Position pos = piece->getPosition();
+                Position pos = m.getTo();
 
                 if (m.getPromoType() == 'n') {
                     grid.push_back(std::make_unique<Knight>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'b' ? 'n' : 'N');
+                    displayGrid[pos.to1D()] = (colour == 'w' ? 'n' : 'N');
                 } else if (m.getPromoType() == 'b') {
                     grid.push_back(std::make_unique<Bishop>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'b' ? 'b' : 'B');
+                    displayGrid[pos.to1D()] = (colour == 'w' ? 'b' : 'B');
                 } else if (m.getPromoType() == 'r') {
                     grid.push_back(std::make_unique<Rook>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'b' ? 'r' : 'R');
+                    displayGrid[pos.to1D()] = (colour == 'w' ? 'r' : 'R');
                 } else if (m.getPromoType() == 'q') {
                     grid.push_back(std::make_unique<Queen>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'b' ? 'q' : 'Q');
+                    displayGrid[pos.to1D()] = (colour == 'w' ? 'q' : 'Q');
                 }
 
                 for (auto it = grid.begin(); it != grid.end(); ++it) { // kill the pawn
