@@ -139,3 +139,19 @@ Piece* Board::getPieceAt(const Position pos) {
 std::vector<char>& Board::getDisplayGrid() {
     return displayGrid;
 }
+
+bool Board::isCheckmate (char colour) {
+
+    char target = colour == 'b' ? 'k' : 'K';
+    Piece* king = nullptr;
+
+    //Find where king is on board
+    for (int i = 0; i < 64; i++) {
+        if (displayGrid[i] == target){
+            king = getPieceAt(Position{i % 8, i / 8});
+        }
+    }
+
+    return false;
+
+}

@@ -20,7 +20,7 @@ bool Position::operator== (const Position& other) {
 }
 
 bool Position::valid() {
-    return this->to1D() >= 0 && this->to1D() < 64;
+    return col >= 0 && col < 8 && row >= 0 && row < 8;
 }
 
 std::ostream& operator<< (std::ostream& out, const Position& pos){

@@ -23,7 +23,7 @@ class Board {
 
     public:
         Board();
-        bool isCheckmate();
+        bool isCheckmate(char colour);
         bool isStalemate();
         void makeMove(Move m);
         void display();
