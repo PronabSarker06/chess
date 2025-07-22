@@ -25,11 +25,17 @@ std::vector<Move> Bishop::getLegalMoves() {
                 cur = {cur.getCol() + hor, cur.getRow() + vert};
             }
             //If we can capture, ie not same color
-            if (cur.valid() && bptr->getPieceAt(cur)->getColour() != colour){
+            if (cur.valid() && bptr->getPieceAt(cur) && bptr->getPieceAt(cur)->getColour() != colour){
                 result.push_back(Move{position, cur, this, bptr->getPieceAt(cur), '0'});
             }
         }
     }
+
+    std::cout << "Valid moves: ";
+    for (auto& m: result){
+        std::cout << m.getTo() << ", ";
+    }
+    std::cout << std::endl;
 
     return result;
 

@@ -24,6 +24,7 @@ bool Position::valid() {
 }
 
 std::ostream& operator<< (std::ostream& out, const Position& pos){
-    out << pos.getCol() << ' ' << pos.getRow();
+    char c = pos.getCol() + 'a';
+    out << c << 8 - pos.getRow();
     return out;
 }

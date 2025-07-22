@@ -46,7 +46,7 @@ std::vector<Move> Pawn::getLegalMoves() {
 
     //cap right
     Position crpos = {position.getCol() + 1, position.getRow() + 1 * colourFactor}; // good cap checks
-    Piece* p = bptr->getPieceAt(crpos);
+    p = bptr->getPieceAt(crpos);
     if (p && p->getColour() != colour) {
         Move capright = {position, crpos, this, p, '0'};
         result.emplace_back(capright);
