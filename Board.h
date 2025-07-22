@@ -10,6 +10,7 @@
 #include "Rook.h"
 #include "Queen.h"
 #include "King.h"
+#include "window.h"
 
 #include <vector>
 #include <memory>
@@ -20,6 +21,7 @@ class Board {
     std::vector<std::unique_ptr<Piece>> grid;
     std::vector<char> displayGrid; 
     bool whiteInCheck, blackInCheck;
+    Xwindow graphicDisplay;
 
     public:
         Board();
@@ -27,6 +29,7 @@ class Board {
         bool isStalemate();
         bool makeMove(Move m);
         void display();
+        void initGraphics();
         bool passantable(Pawn& p);
         void castle(King &k, Rook &r);
         bool isAttacked(Position square, char enemy_colour);

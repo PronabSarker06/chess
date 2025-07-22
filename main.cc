@@ -19,6 +19,7 @@ int main () {
 
     Board B;
     B.display();
+    B.initGraphics();
     char fCol, tCol;
     int fRow, tRow;
     char whose_turn = 'w';
