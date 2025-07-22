@@ -13,11 +13,15 @@ bool King::canMove(Move) {
 
 
 std::vector<Move> King::getLegalMoves() {
-  
+
     std::vector<Move> result;
     // Regular moves for King
     for (int col_change = -1; col_change <= 1; ++col_change) {
         for (int row_change = -1; row_change <= 1; ++row_change) {
+            // A piece cannot move to itself
+            if (row_change == 0 && col_change == 0) {
+                continue;
+            }
             Position to = {
                 this->position.getCol() + col_change,
                 this->position.getRow() + row_change
