@@ -33,7 +33,7 @@ int main () {
         if (p == nullptr) {
             std::cout << "No piece located there." << std::endl;
         } else { 
-            B.makeMove({f, t, p, nullptr, '0'});
+            B.makeMove({f, t, p, B.getPieceAt(t), '0'});
         }
 
         B.display();
