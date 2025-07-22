@@ -110,9 +110,21 @@ void Board::makeMove(Move m) {
       for (auto &piece : grid) {
         if (piece.get() == m.getPieceMoved()) {
             piece->setMoved();
-          piece.get()->modPos(m.getTo());
-          displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
-          displayGrid[m.getFrom().to1D()] = '0';
+
+            if (m.getCap()) { 
+                // Remove captured piece from grid
+                for (auto it = grid.begin(); it != grid.end(); ++it) {
+                    if (it->get() == m.getCap()) {
+                        displayGrid[m.getCap()->getPosition().to1D()] = '0';
+                        grid.erase(it);
+                        break;
+                    }
+                }
+            }
+            piece.get()->modPos(m.getTo());
+            displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
+            displayGrid[m.getFrom().to1D()] = '0';
+            
         }
       }
     }

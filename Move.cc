@@ -7,17 +7,21 @@ Move::Move(Position from, Position to, Piece* pieceMoved, Piece* pieceCaptured, 
     : from {from}, to {to}, pieceMoved {pieceMoved}, pieceCaptured {pieceCaptured}, promotionType {promoType} {}
 
 Piece* Move::getPieceMoved() { 
-    return this->pieceMoved;
+    return pieceMoved;
 }
 
 Position Move::getTo() { 
-    return this->to;
+    return to;
 }
 
 Position Move::getFrom() { 
-    return this->from;
+    return from;
 }
 
 bool Move::operator==(Move& o) const { 
     return (from == o.from && to == o.to && pieceCaptured == o.pieceCaptured && pieceMoved == o.pieceMoved && promotionType == o.promotionType);
+}
+
+Piece* Move::getCap() { 
+    return pieceCaptured;
 }
