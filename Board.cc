@@ -13,7 +13,7 @@ const char preset[BOARD_SIZE] {
     'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R', // row 1
 };
 
-Board::Board() { 
+Board::Board() : graphicDisplay (550, 550) { 
     for (int i = 0; i < BOARD_SIZE; ++i) {
 
         displayGrid.push_back( preset[i] );
@@ -49,6 +49,7 @@ void Board::display() {
         std::cout << 8 - i << ' '; //side numbers
 
         for (int j = 0; j < 8; j++) {
+            //Handle terminal display
             if (displayGrid[i * 8 + j] == '0'){
                 std::cout << ((i + j) % 2 == 0 ? ' ' : '_') << ' ';
             }
@@ -68,9 +69,47 @@ void Board::display() {
 
 }
 
+void Board::initGraphics() {
+
+    const int padding = 25;
+    int windowHeight = graphicDisplay.getHeight();
+    int windowWidth = graphicDisplay.getWidth();
+    const int boardSize = windowHeight - 2 * padding; //size of board
+    int tileWidth = boardSize / 8;
+    int tileHeight = boardSize / 8;
+
+    for (int i = 0; i < 8; i++) {
+
+        //Side numbers
+        std::string num = std::to_string(8 - i);
+        graphicDisplay.drawString(padding / 2, padding + tileHeight * i + tileHeight / 2, num);
+
+        //Setup initial tiles
+        for (int j = 0; j < 8; j++) {
+            //Handle black / white tiles
+            if ((i + j) % 2 == 0) graphicDisplay.fillRectangle(padding + tileWidth * j, padding + tileHeight * i, tileWidth, tileHeight, 6);
+            else graphicDisplay.fillRectangle(padding + tileWidth * j, padding + tileHeight * i, tileWidth, tileHeight, 5);
+            if (displayGrid[i * 8 + j] != '0') {
+                std::string s {displayGrid[i * 8 + j]};
+                graphicDisplay.drawString(padding + tileWidth * j + tileWidth / 2, padding + tileHeight * i + tileHeight / 2, s);
+            }
+        }
+
+    }
+
+    //Draw bottom letters
+    for (char c = 'a'; c <= 'h'; c++){
+        std::string s {c};
+        graphicDisplay.drawString(padding + tileWidth * (c - 'a') + tileWidth / 2, windowHeight - padding / 2, s);
+    }
+
+}
+
 bool inLegalMoves(const Move m, Piece* p) { 
+    //std::cout << p->getType() << '\n';
     std::vector<Move> legalMoves = p->getLegalMoves();
     for (int i = 0; i < (int) legalMoves.size(); ++i) {
+        std::cout << legalMoves[i] << '\n';
         if (m == legalMoves[i]) return true;
     }
     return false;
@@ -93,7 +132,7 @@ bool Board::makeMove(Move m) {
                 }
             }
 
-            if (m.getPieceMoved()->getType() == 'k' && !m.getPieceMoved()->getHasMoved()) { //segfault 
+    if (m.getPieceMoved()->getType() == 'k' && !m.getPieceMoved()->getHasMoved()) { //segfault 
                 Position oldPos = {0, 0};
                 Position newPos = {0, 0};
                 if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
@@ -113,13 +152,14 @@ bool Board::makeMove(Move m) {
                 r->setMoved();
                 displayGrid[newPos.to1D()] = displayGrid[oldPos.to1D()];
                 displayGrid[oldPos.to1D()] = '0';
-            } 
+            }        
 
-            if (m.getPromoType() != '0') { 
+    // 4) Handle promotion
+    if (m.getPromoType() != '0') {
 
-                // Promote the pawn
-                char colour = piece->getColour();
-                Position pos = m.getTo();
+        char colour = m.getPieceMoved()->getColour();
+        std::cout << colour << '\n';
+        Position pos = m.getTo();
 
                 if (m.getPromoType() == 'N') {
                     grid.push_back(std::make_unique<Knight>(colour, pos, this));
@@ -145,9 +185,7 @@ bool Board::makeMove(Move m) {
             else{
                 displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
             }
-            
             piece->setMoved();
-
             displayGrid[m.getFrom().to1D()] = '0';
             
             return true;
