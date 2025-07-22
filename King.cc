@@ -32,7 +32,7 @@ std::vector<Move> King::getLegalMoves() {
             // Destination can only be empty or an enemy piece
             if (bptr->getPieceAt(to) == nullptr
             || this->colour != bptr->getPieceAt(to)->getColour()) {
-                result.emplace_back(this->position, to, this, target);
+                result.emplace_back(this->position, to, this, bptr->getPieceAt(to));
             }
         }
     }

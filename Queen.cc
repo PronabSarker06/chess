@@ -1,5 +1,6 @@
 #include "Queen.h"
 #include "Move.h"
+#include "Board.h"
 
 Queen::Queen(char c, Position p, Board* bptr) 
     : Piece(c, 'q', p, bptr) {}
@@ -13,8 +14,8 @@ bool Queen::canMove(Move) {
 
 std::vector<Move> Queen::getLegalMoves() {
     std::vector<Move> result;
-    for (int row_change = -1; row_change <= 1; ++row_change) {
-        for (int col_change = -1; col_change <= 1; ++col_change) {
+    for (int row_change = -1; row_change < 2; ++row_change) {
+        for (int col_change = -1; col_change < 2; ++col_change) {
             // A piece cannot move to itself
             if (row_change == 0 && col_change == 0) {
                 continue;
