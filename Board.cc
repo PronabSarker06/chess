@@ -138,7 +138,7 @@ bool Board::makeMove(Move m) {
         grid.erase(it);
     }
 
-    if (m.getPieceMoved()->getType() == 'k' && !m.getPieceMoved()->getHasMoved()) { //segfault 
+    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getRow() - m.getTo().getRow()) > 1) { //segfault 
         Position oldPos = {0, 0};
         Position newPos = {0, 0};
         if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
