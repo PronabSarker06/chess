@@ -19,6 +19,7 @@ class Move {
         Position getTo();
         Position getFrom();
         Piece* getCap();
+        char getPromoType();
         bool operator==(Move& o) const;
 
 };

@@ -25,3 +25,7 @@ bool Move::operator==(Move& o) const {
 Piece* Move::getCap() { 
     return pieceCaptured;
 }
+
+char Move::getPromoType() { 
+    return promotionType;
+}

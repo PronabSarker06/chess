@@ -123,6 +123,33 @@ bool Board::makeMove(Move m) {
                 }
             }
 
+            if (m.getPromoType() != '0') { 
+                // Promote the pawn
+                char colour = piece->getColour();
+                Position pos = piece->getPosition();
+
+                if (m.getPromoType() == 'n') {
+                    grid.push_back(std::make_unique<Knight>(colour, pos, this));
+                    displayGrid[pos.to1D()] = (colour == 'b' ? 'n' : 'N');
+                } else if (m.getPromoType() == 'b') {
+                    grid.push_back(std::make_unique<Bishop>(colour, pos, this));
+                    displayGrid[pos.to1D()] = (colour == 'b' ? 'b' : 'B');
+                } else if (m.getPromoType() == 'r') {
+                    grid.push_back(std::make_unique<Rook>(colour, pos, this));
+                    displayGrid[pos.to1D()] = (colour == 'b' ? 'r' : 'R');
+                } else if (m.getPromoType() == 'q') {
+                    grid.push_back(std::make_unique<Queen>(colour, pos, this));
+                    displayGrid[pos.to1D()] = (colour == 'b' ? 'q' : 'Q');
+                }
+
+                for (auto it = grid.begin(); it != grid.end(); ++it) { // kill the pawn
+                    if (it->get() == piece.get()) {
+                        grid.erase(it);
+                        break;
+                    }
+                }
+            }
+
             displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
             displayGrid[m.getFrom().to1D()] = '0';
             return true;

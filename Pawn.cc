@@ -24,7 +24,7 @@ std::vector<Move> Pawn::getLegalMoves() {
     //if nothing blocking the pawn
     Position f1pos = {position.getCol(), position.getRow() + 1 * colourFactor}; // add promo
     if (f1pos.valid() && bptr->getDisplayGrid()[f1pos.to1D()] == '0'){
-        if (position.getRow() == (colour == 'b' ? 1 : 6)) {
+        if (position.getRow() == (colour == 'b' ? 6 : 1)) {
             Move knightPromo = {position, f1pos, this, nullptr, 'n'}; // promo moves
             Move bishopPromo = {position, f1pos, this, nullptr, 'b'}; 
             Move rookPromo = {position, f1pos, this, nullptr, 'r'}; 
@@ -44,7 +44,7 @@ std::vector<Move> Pawn::getLegalMoves() {
     //only if first move, can go up 2, check nothing blocks
     Position f2pos = {position.getCol(), position.getRow() + 2 * colourFactor}; // add promo (setup can have a pawn promote on first move)
     if (!hasMoved && f2pos.valid() && bptr->getDisplayGrid()[f2pos.to1D()] == '0'){
-        if (position.getRow() == (colour == 'b' ? 6 : 1)) {
+        if (position.getRow() == (colour == 'b' ? 5 : 2)) {
             Move knightPromo = {position, f2pos, this, nullptr, 'n'}; // promo moves
             Move bishopPromo = {position, f2pos, this, nullptr, 'b'}; 
             Move rookPromo = {position, f2pos, this, nullptr, 'r'}; 
@@ -64,7 +64,7 @@ std::vector<Move> Pawn::getLegalMoves() {
     Position clpos = {position.getCol() - 1, position.getRow() + 1 * colourFactor}; // add promo
     Piece* p = bptr->getPieceAt(clpos);
     if (p && p->getColour() != colour) {
-        if (position.getRow() == (colour == 'b' ? 2 : 5)) {
+        if (position.getRow() == (colour == 'b' ? 6 : 1)) {
             Move knightPromo = {position, clpos, this, nullptr, 'n'}; // promo moves
             Move bishopPromo = {position, clpos, this, nullptr, 'b'}; 
             Move rookPromo = {position, clpos, this, nullptr, 'r'}; 
@@ -84,7 +84,7 @@ std::vector<Move> Pawn::getLegalMoves() {
     Position crpos = {position.getCol() + 1, position.getRow() + 1 * colourFactor}; // add promo
     p = bptr->getPieceAt(crpos);
     if (p && p->getColour() != colour) {
-        if (position.getRow() == (colour == 'b' ? 1 : 6)) {
+        if (position.getRow() == (colour == 'b' ? 6 : 1)) {
             Move knightPromo = {position, crpos, this, nullptr, 'n'}; // promo moves
             Move bishopPromo = {position, crpos, this, nullptr, 'b'}; 
             Move rookPromo = {position, crpos, this, nullptr, 'r'}; 
