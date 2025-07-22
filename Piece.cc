@@ -26,3 +26,7 @@ char Piece::getColour() {
 void Piece::modPos(Position p) { 
     this->position = p;
 }
+
+bool Piece::getHasMoved() { 
+    return this->hasMoved;
+}

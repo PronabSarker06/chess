@@ -36,6 +36,41 @@ std::vector<Move> King::getLegalMoves() {
             }
         }
     }
+
+    char enemyColour = colour == 'w' ? 'b' : 'w';
+
+    // castles
+    if (!hasMoved && !bptr->isAttacked(position, enemyColour)) {
+        int row = position.getRow();
+
+        // Castling to the left (queenside)
+        Piece* leftrook = bptr->getPieceAt(Position{0, row});
+        if (leftrook && leftrook->getType() == 'r' && !leftrook->getHasMoved()) {
+            if (!bptr->getPieceAt(Position{1, row}) && 
+                !bptr->getPieceAt(Position{2, row}) && 
+                !bptr->getPieceAt(Position{3, row}) &&
+                !bptr->isAttacked(Position{2, row}, enemyColour) &&
+                !bptr->isAttacked(Position{3, row}, enemyColour)) {
+
+                Position to = {2, row}; // king ends up on column 2
+                result.emplace_back(position, to, this, nullptr); // add move
+            }
+        }
+
+        // Castling to the right (kingside)
+        Piece* rightrook = bptr->getPieceAt(Position{7, row});
+        if (rightrook && rightrook->getType() == 'r' && !rightrook->getHasMoved()) {
+            if (!bptr->getPieceAt(Position{5, row}) &&
+                !bptr->getPieceAt(Position{6, row}) &&
+                !bptr->isAttacked(Position{5, row}, enemyColour) &&
+                !bptr->isAttacked(Position{6, row}, enemyColour)) { // all true? 
+
+                Position to = {6, row}; // king ends up on column 6
+                result.emplace_back(position, to, this, nullptr); // add move
+            }
+        }
+    }
+
     return result;
     
 }

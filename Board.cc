@@ -4,7 +4,7 @@
 
 const char preset[BOARD_SIZE] {
     'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 8
-    'p', 'p', 'P', 'p', 'p', 'p', 'p', 'p',
+    'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
@@ -81,8 +81,6 @@ bool Board::makeMove(Move m) {
     if (inLegalMoves(m, getPieceAt(m.getFrom()))) {
       for (auto &piece : grid) {
         if (piece.get() == m.getPieceMoved()) {
-
-            piece->setMoved();
             piece.get()->modPos(m.getTo()); // do not touch, mystical
 
             if (m.getCap()) { 
@@ -94,6 +92,28 @@ bool Board::makeMove(Move m) {
                     }
                 }
             }
+
+            if (m.getPieceMoved()->getType() == 'k' && !m.getPieceMoved()->getHasMoved()) { //segfault 
+                Position oldPos = {0, 0};
+                Position newPos = {0, 0};
+                if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
+                    newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
+                    oldPos = {m.getTo().getCol() - 1, m.getTo().getRow()};
+                }
+                else { // queen
+                    newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
+                    oldPos = {m.getTo().getCol() - 2, m.getTo().getRow()};
+                }
+
+                std::cout << oldPos << " " << newPos << std::endl;
+
+                Piece* r = getPieceAt(oldPos);
+
+                r->modPos(newPos);
+                r->setMoved();
+                displayGrid[newPos.to1D()] = displayGrid[oldPos.to1D()];
+                displayGrid[oldPos.to1D()] = '0';
+            } 
 
             if (m.getPromoType() != '0') { 
 
@@ -125,6 +145,8 @@ bool Board::makeMove(Move m) {
             else{
                 displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
             }
+            
+            piece->setMoved();
 
             displayGrid[m.getFrom().to1D()] = '0';
             
@@ -140,7 +162,7 @@ bool Board::makeMove(Move m) {
 
 }
 
-void Board::castle(King &k, Rook &r) {
+/*void Board::castle(King &k, Rook &r) {
     if (k.getColour() == 'b') {
         if (r.getPosition().getCol() == 7) {
             // King Side
@@ -182,6 +204,7 @@ void Board::castle(King &k, Rook &r) {
         }
     }
 }
+*/
 
 bool Board::isAttacked(Position square, char enemy_colour) {
     // Check if enemy knights are attacking the square
