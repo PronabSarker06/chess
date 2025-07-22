@@ -30,6 +30,7 @@ class Board {
         bool makeMove(Move m);
         void display();
         void initGraphics();
+        void drawTile(Position pos, char piece = '0');
         bool passantable(Pawn& p);
         void castle(King &k, Rook &r);
         bool isAttacked(Position square, char enemy_colour);

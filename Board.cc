@@ -10,7 +10,7 @@ const char preset[BOARD_SIZE] {
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-    'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R', // row 1
+    'R', '0', '0', '0', 'K', 'B', 'N', 'R', // row 1
 };
 
 Board::Board() : graphicDisplay (550, 550) { 
@@ -105,6 +105,28 @@ void Board::initGraphics() {
 
 }
 
+void Board::drawTile(Position pos, char piece) {
+
+    const int padding = 25;
+    int windowHeight = graphicDisplay.getHeight();
+    int windowWidth = graphicDisplay.getWidth();
+    const int boardSize = windowHeight - 2 * padding; //size of board
+    int tileWidth = boardSize / 8;
+    int tileHeight = boardSize / 8;
+
+    int i = pos.getRow();
+    int j = pos.getCol();
+    if ((i + j) % 2 == 0) graphicDisplay.fillRectangle(padding + tileWidth * j, padding + tileHeight * i, tileWidth, tileHeight, 6);
+    else graphicDisplay.fillRectangle(padding + tileWidth * j, padding + tileHeight * i, tileWidth, tileHeight, 5);
+
+    if (piece != '0'){
+        std::string s {piece};
+        graphicDisplay.drawString(padding + tileWidth * j + tileWidth / 2, padding + tileHeight * i + tileHeight / 2, s);
+    }
+
+
+}
+
 bool inLegalMoves(const Move m, Piece* p) { 
     //std::cout << p->getType() << '\n';
     std::vector<Move> legalMoves = p->getLegalMoves();
@@ -126,6 +148,7 @@ bool Board::makeMove(Move m) {
     //Update piece info
     m.getPieceMoved()->modPos(m.getTo());
     displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
+    drawTile(m.getTo(), displayGrid[m.getTo().to1D()]);
 
     // Remove captured piece (if any)
     if (m.getCap()) {
@@ -158,6 +181,8 @@ bool Board::makeMove(Move m) {
         r->setMoved();
         displayGrid[newPos.to1D()] = displayGrid[oldPos.to1D()];
         displayGrid[oldPos.to1D()] = '0';
+        drawTile(newPos, displayGrid[newPos.to1D()]);
+        drawTile(oldPos);
     }
 
     // 4) Handle promotion
@@ -186,11 +211,13 @@ bool Board::makeMove(Move m) {
         }
         grid.emplace_back(std::move(newPiece));
         displayGrid[pos.to1D()] = (colour=='b' ? tolower(m.getPromoType()) : toupper(m.getPromoType()));
+        drawTile(pos, displayGrid[pos.to1D()]);
 
     }
 
     // Clear the origin square
     displayGrid[m.getFrom().to1D()] = '0';
+    drawTile(m.getFrom()); //draw over old square
     m.getPieceMoved()->setMoved();
 
     return true;
