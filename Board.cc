@@ -214,23 +214,18 @@ bool Board::isAttacked(Position square, char enemy_colour) {
             // Loop in one direction until hit obstacle (own piece, out of bounds)
             while (true) {
                 to = {to.getCol() + col_change, to.getRow() + row_change};
-                if (!to.valid()) {
-                    break;   
-                } 
+                if (!to.valid()) break;
                 Piece* p = getPieceAt(to);
-                if (!p) {
-                    continue;
-                }
+                if (!p) continue; 
                 if (p->getColour() == enemy_colour) {
                     char type = p->getType();
-                    // test if diagonal: diagonal attacks don't work for rooks
                     bool isDiagonal = (abs(row_change) == abs(col_change));
                     if (enemy_colour == 'w') {
                         if ((isDiagonal && (type == 'B' || type == 'Q'))
                         || (!isDiagonal && (type == 'R' || type == 'Q'))) {
                             return true;
                         }
-                    } else if (enemy_colour == 'b') { 
+                    } else {
                         if ((isDiagonal && (type == 'b' || type == 'q'))
                         || (!isDiagonal && (type == 'r' || type == 'q'))) {
                             return true;
@@ -241,7 +236,6 @@ bool Board::isAttacked(Position square, char enemy_colour) {
             }
         }
     }
-
     // Check pawn attacks
     int dir = (enemy_colour == 'w') ? -1 : 1;
     Position pawns[2] = {
@@ -272,8 +266,7 @@ bool Board::isAttacked(Position square, char enemy_colour) {
             if (to.valid()) {
                 Piece* p = getPieceAt(to);
                 if (p && p->getColour() == enemy_colour) {
-                    if ((enemy_colour == 'w' && p->getType() == 'K')
-                    || (enemy_colour == 'b' && p->getType() == 'k')) {
+                    if ((p->getType() == 'K') || (p->getType() == 'k')) {
                         return true;
                     }
                 }
