@@ -32,7 +32,6 @@ int main () {
         Piece* p = B.getPieceAt(f);
         if (p == nullptr) {
             std::cout << "No piece located there." << std::endl;
-            break;
         } else { 
             B.makeMove({f, t, p, nullptr, '0'});
         }

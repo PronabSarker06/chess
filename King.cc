@@ -11,7 +11,7 @@ bool King::canMove(Move) {
 
 }
 
-/*
+
 std::vector<Move> King::getLegalMoves() {
    std::vector<Move> result;
   
@@ -33,9 +33,4 @@ std::vector<Move> King::getLegalMoves() {
        }
    }
    return result;
-}
-*/
-
-std::vector<Move> King::getLegalMoves() { 
-    
 }
