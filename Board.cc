@@ -183,6 +183,104 @@ void Board::castle(King &k, Rook &r) {
     }
 }
 
+bool Board::isAttacked(Position square, char enemy_colour) {
+   // Check if enemy knights pointing at square
+   std::vector<int> col_change = {2, 2, -2, -2, 1, 1, -1, -1};
+   std::vector<int> row_change = {1, -1, 1, -1, 2, -2, 2, -2};
+   for (int i = 0; i < 8; ++i) {
+       Position to = {
+           square.getCol() + col_change.at(i),
+           square.getRow() + row_change.at(i)
+       };
+       if (enemy_colour == 'w') {
+           if (getPieceAt(to)->getType() == 'N') {
+               return true;
+           }
+       } else if (enemy_colour == 'b') {
+           if (getPieceAt(to)->getType() == 'n') {
+               return true;
+           }
+       }
+   }
+
+
+   // Check long diagonal/horizontal/vertical attacks (Rook, Bishop, Queen)
+   for (int row_change = -1; row_change < 2; ++row_change) {
+       for (int col_change = -1; col_change < 2; ++col_change) {
+           if (row_change == 0 && col_change == 0) {
+               continue;
+           }
+           Position to = {square.getCol() + col_change, square.getRow() + row_change};
+           // Move in the direction until invalid move
+           while (to.valid()) {
+               if (getPieceAt(to)->getType() == 'w') {
+                   if (enemy_colour != 'w') {
+                       break;
+                   } else {
+                       return true;
+                   }
+               } else if (getPieceAt(to)->getType() == 'b') {
+                   if (enemy_colour != 'b') {
+                       break;
+                   } else {
+                       return true;
+                   }
+               }
+           }
+       }
+   }
+
+
+   // Check pawn attacks
+   int dir = (enemy_colour == 'w') ? 1 : -1;
+   Position pawns[2] = {{square.getCol() - 1, square.getRow() + dir},
+                       {square.getCol() + 1, square.getRow() + dir}};
+   for (Position p : pawns) {
+       if (p.valid()) {
+           if (getPieceAt(p)->getType() == 'P') {
+               if (enemy_colour == 'w') {
+                   return true;
+               }
+           } else if (getPieceAt(p)->getType() == 'p') {
+               if (enemy_colour == 'b') {
+                   return true;
+               }
+           }
+       }
+   }
+
+
+   // Check king attacks
+   for (int col_change = -1; col_change <= 1; ++col_change) {
+       for (int row_change = -1; row_change <= 1; ++row_change) {
+           // A piece cannot move to itself
+           if (row_change == 0 && col_change == 0) {
+               continue;
+           }
+           Position to = {
+               square.getCol() + col_change,
+               square.getRow() + row_change
+           };
+           if (!to.valid()) {
+               continue;
+           }
+           // Destination can only be empty or an enemy piece
+           if (getPieceAt(to)->getType() == 'K') {
+               if (enemy_colour == 'w') {
+                   return true;
+               }
+           } else if (getPieceAt(to)->getType() == 'k') {
+               if (enemy_colour == 'b') {
+                   return true;
+               }
+           }
+       }
+   }
+
+
+   return false;
+}
+
 Piece* Board::getPieceAt(const Position pos) {
     for (const auto& piece : grid) {
         //std::cout << piece.get()->getPosition() << ' ' << pos << '\n';
