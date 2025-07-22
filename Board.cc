@@ -139,6 +139,61 @@ void Board::makeMove(Move m) {
   }
 }
 
+void Board::castle(King &k, Rook &r) {
+    // Castling for Black
+    if (k.getColour() == 'b') {
+        Board* bptr = grid[7 * 8 + 4].bptr;
+        // King Side
+        if (r.getPosition().getCol() == 7) {
+            // remove king, rook
+            grid[7 * 8 + 4] = nullptr;
+            grid[7 * 8 + 7] = nullptr;
+            // place new positions for king, rook
+            Piece new_king = {'b', 'k', true, Position{6, 7}, bptr};
+            Piece new_rook = {'b', 'r', true, Position{5, 7}, bptr};
+            grid[7 * 8 + 6] = new_king;
+            grid[7 * 8 + 5] = new_rook;
+        }
+        // Queen Side
+        if (r.getPosition().getCol() == 0) {
+            // remove king, rook
+            grid[7 * 8 + 4] = nullptr;
+            grid[7 * 8 + 7] = nullptr;
+            // place new positions for king, rook
+            Piece new_king = {'b', 'k', true, Position{2, 7}, bptr};
+            Piece new_rook = {'b', 'r', true, Position{3, 7}, bptr};
+            grid[7 * 8 + 2] = new_king;
+            grid[7 * 8 + 3] = new_rook;          
+        }
+    }
+    // Castling for White
+    if (k.getColour() == 'w') {
+        Board* bptr = grid[0 * 8 + 4].bptr;
+        // King Side
+        if (r.getPosition().getCol() == 7) {
+            // remove king, rook
+            grid[0 * 8 + 4] = nullptr;
+            grid[0 * 8 + 7] = nullptr;
+            // place new positions for king, rook
+            Piece new_king = {'w', 'K', true, Position{6, 0}, bptr};
+            Piece new_rook = {'w', 'R', true, Position{5, 0}, bptr};
+            grid[0 * 8 + 6] = new_king;
+            grid[0 * 8 + 5] = new_rook;
+        }
+        // Queen Side
+        if (r.getPosition().getCol() == 0) {
+            // remove king, rook
+            grid[0 * 8 + 4] = nullptr;
+            grid[0 * 8 + 7] = nullptr;
+            // place new positions for king, rook
+            Piece new_king = {'w', 'K', true, Position{2, 0}, bptr};
+            Piece new_rook = {'w', 'R', true, Position{3, 0}, bptr};
+            grid[0 * 8 + 2] = new_king;
+            grid[0 * 8 + 3] = new_rook;  
+        }
+    }
+}
+
 Piece* Board::getPieceAt(const Position pos) {
     for (const auto& piece : grid) {
         //std::cout << piece.get()->getPosition() << ' ' << pos << '\n';
