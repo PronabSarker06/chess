@@ -117,42 +117,27 @@ bool inLegalMoves(const Move m, Piece* p) {
 
 bool Board::makeMove(Move m) {
 
-    if (inLegalMoves(m, getPieceAt(m.getFrom()))) {
-      for (auto &piece : grid) {
-        if (piece.get() == m.getPieceMoved()) {
-            piece.get()->modPos(m.getTo()); // do not touch, mystical
+    //Leave if not legal
+    if (!inLegalMoves(m, getPieceAt(m.getFrom()))) {
+        std::cout << "Not a valid move.\n";
+        return false;
+    }
 
-            if (m.getCap()) { 
-                // Remove captured piece from grid
-                for (auto it = grid.begin(); it != grid.end(); ++it) {
-                    if (it->get() == m.getCap()) {
-                        grid.erase(it);
-                        break;
-                    }
-                }
+    //Update piece info
+    m.getPieceMoved()->setMoved();
+    m.getPieceMoved()->modPos(m.getTo());
+    displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
+
+    // Remove captured piece (if any)
+    if (m.getCap()) {
+        auto it = grid.begin();
+        for (; it != grid.end(); it++){
+            if (it->get() == m.getCap()){
+                break;
             }
-
-    if (m.getPieceMoved()->getType() == 'k' && !m.getPieceMoved()->getHasMoved()) { //segfault 
-                Position oldPos = {0, 0};
-                Position newPos = {0, 0};
-                if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
-                    newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
-                    oldPos = {m.getTo().getCol() - 1, m.getTo().getRow()};
-                }
-                else { // queen
-                    newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
-                    oldPos = {m.getTo().getCol() - 2, m.getTo().getRow()};
-                }
-
-                std::cout << oldPos << " " << newPos << std::endl;
-
-                Piece* r = getPieceAt(oldPos);
-
-                r->modPos(newPos);
-                r->setMoved();
-                displayGrid[newPos.to1D()] = displayGrid[oldPos.to1D()];
-                displayGrid[oldPos.to1D()] = '0';
-            }        
+        }
+        grid.erase(it);
+    }
 
     // 4) Handle promotion
     if (m.getPromoType() != '0') {
@@ -161,42 +146,32 @@ bool Board::makeMove(Move m) {
         std::cout << colour << '\n';
         Position pos = m.getTo();
 
-                if (m.getPromoType() == 'N') {
-                    grid.push_back(std::make_unique<Knight>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'w' ? 'n' : 'N');
-                } else if (m.getPromoType() == 'B') {
-                    grid.push_back(std::make_unique<Bishop>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'w' ? 'b' : 'B');
-                } else if (m.getPromoType() == 'R') {
-                    grid.push_back(std::make_unique<Rook>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'w' ? 'r' : 'R');
-                } else if (m.getPromoType() == 'Q') {
-                    grid.push_back(std::make_unique<Queen>(colour, pos, this));
-                    displayGrid[pos.to1D()] = (colour == 'w' ? 'q' : 'Q');
-                }
-
-                for (auto it = grid.begin(); it != grid.end(); ++it) { // kill the pawn
-                    if (it->get() == piece.get()) {
-                        grid.erase(it);
-                        break;
-                    }
-                }
+        //Erase original piece
+        auto it = grid.begin();
+        for (; it != grid.end(); it++){
+            if (it->get() == m.getPieceMoved()){
+                break;
             }
-            else{
-                displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
-            }
-            piece->setMoved();
-            displayGrid[m.getFrom().to1D()] = '0';
-            
-            return true;
-            
         }
-      }
+        grid.erase(it);
+
+        // Create a new unique_ptr
+        std::unique_ptr<Piece> newPiece;
+        switch (m.getPromoType()) {
+            case 'N': newPiece = std::make_unique<Knight>(colour, pos, this); break;
+            case 'B': newPiece = std::make_unique<Bishop>(colour, pos, this); break;
+            case 'R': newPiece = std::make_unique<Rook>(colour, pos, this);   break;
+            case 'Q': newPiece = std::make_unique<Queen>(colour, pos, this);  break;
+        }
+        grid.emplace_back(std::move(newPiece));
+        displayGrid[pos.to1D()] = (colour=='b' ? tolower(m.getPromoType()) : toupper(m.getPromoType()));
+
     }
-    else { 
-        std::cout << "Not a valid move." << std::endl;
-        return false;
-    }
+
+    // Clear the origin square
+    displayGrid[m.getFrom().to1D()] = '0';
+
+    return true;
 
 }
 
