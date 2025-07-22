@@ -101,16 +101,16 @@ bool Board::makeMove(Move m) {
                 char colour = piece->getColour();
                 Position pos = m.getTo();
 
-                if (m.getPromoType() == 'n') {
+                if (m.getPromoType() == 'N') {
                     grid.push_back(std::make_unique<Knight>(colour, pos, this));
                     displayGrid[pos.to1D()] = (colour == 'w' ? 'n' : 'N');
-                } else if (m.getPromoType() == 'b') {
+                } else if (m.getPromoType() == 'B') {
                     grid.push_back(std::make_unique<Bishop>(colour, pos, this));
                     displayGrid[pos.to1D()] = (colour == 'w' ? 'b' : 'B');
-                } else if (m.getPromoType() == 'r') {
+                } else if (m.getPromoType() == 'R') {
                     grid.push_back(std::make_unique<Rook>(colour, pos, this));
                     displayGrid[pos.to1D()] = (colour == 'w' ? 'r' : 'R');
-                } else if (m.getPromoType() == 'q') {
+                } else if (m.getPromoType() == 'Q') {
                     grid.push_back(std::make_unique<Queen>(colour, pos, this));
                     displayGrid[pos.to1D()] = (colour == 'w' ? 'q' : 'Q');
                 }
