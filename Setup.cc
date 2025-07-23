@@ -1,4 +1,5 @@
 #include "Setup.h"
+#include <vector>
 
 Setup::Setup(Board* b) : b{b} {}
 
@@ -22,13 +23,13 @@ bool Setup::valid() {
 }
 
 void Setup::removePiece(Position p) { 
-    for (auto it = b->getGrid().begin(); it != b->getGrid().end(); ++it) {
+    auto it = b->getGrid().begin();
+    for (; it != b->getGrid().end(); ++it) {
         if (it->get()->getPosition() == p) {
-            b->getGrid().erase(it);
             break;
         }
     }
-
+    b->getGrid().erase(it);
     b->drawTile(p);
 }
 
@@ -40,12 +41,14 @@ void Setup::addPiece(Position p, char colour, char type) {
     std::unique_ptr<Piece> newPiece;
 
     switch (type) {
-        case 'N': newPiece = std::make_unique<Knight>(colour, p, b); break;
-        case 'B': newPiece = std::make_unique<Bishop>(colour, p, b); break;
-        case 'R': newPiece = std::make_unique<Rook>(colour, p, b);   break;
-        case 'Q': newPiece = std::make_unique<Queen>(colour, p, b);  break;
+        case 'p': newPiece = std::make_unique<Pawn>(colour, p, b); break;
+        case 'n': newPiece = std::make_unique<Knight>(colour, p, b); break;
+        case 'b': newPiece = std::make_unique<Bishop>(colour, p, b); break;
+        case 'r': newPiece = std::make_unique<Rook>(colour, p, b);   break;
+        case 'q': newPiece = std::make_unique<Queen>(colour, p, b);  break;
+        case 'k': newPiece = std::make_unique<King>(colour, p, b);  break;
     }
 
-    b->getGrid().emplace_back(newPiece);
+    b->getGrid().emplace_back(std::move(newPiece));
     b->drawTile(p, (colour == 'w' ? std::toupper(type) : type));
 }

@@ -17,12 +17,10 @@ int main () {
 
     std::cout << "Welcome to Chess :D\n";
 
-    Board B;
-    B.display();
-    B.initGraphics();
+    Game G; 
+
     char fCol, tCol;
     int fRow, tRow;
-    char whose_turn = 'w';
 
     //Read whole line
     std::string line;
@@ -31,38 +29,40 @@ int main () {
         //Read the first word of the line, the command
         std::string cmd;
         iss >> cmd;
-        if (cmd == "move"){
-            iss >> fCol >> fRow >> tCol >> tRow;
-            //For pawn promotion
-            char promo = '0';
-            iss >> promo;
-            std::cout << promo << '\n';
-            //Make 0 indexing
-            fRow--;
-            tRow--;
-            //Create pos
-            Position f = {fCol - 'a', 7 - fRow};
-            Position t = {tCol - 'a', 7 - tRow};
-            Piece* p = B.getPieceAt(f);
-            //Handle turn
-            if (p == nullptr) {
-                std::cout << "No piece located there." << std::endl;
-            } else if (p->getColour() != whose_turn) {
-                std::cout << "Cannot move your enemy's pieces." << std::endl;
-            } else if (B.makeMove({f, t, p, B.getPieceAt(t), promo})){
-                if (whose_turn == 'w') {
-                    whose_turn = 'b';
-                } else {
-                    whose_turn = 'w';
+        if (cmd == "game") {
+            std::string player1 = "", player2 = "";
+            iss >> player1 >> player2;
+            if (player1 == "human") {
+                if (player2 == "human"){
+                    G.startGame();
                 }
             }
+            else{
+                
+            }
+        }
+        else if (cmd == "move"){
+            if (G.gameOn()){
+                iss >> fCol >> fRow >> tCol >> tRow;
+                //For pawn promotion
+                char promo = '0';
+                iss >> promo;
+                G.makeMove(fCol, fRow, tCol, tRow, promo);
+            }
+            else std::cout << "No active game. Please start a game using \"game <whiteplayer> <blackplayer>\"" << std::endl;
+        }
+        else if (cmd == "setup"){
+            if (G.gameOn()){
+                std::cout << "Error: A game is currently active, please finish the game first" << std::endl;
+            }
+            else G.setup();
         }
         //Invalid commands
         else{
             std::cout << "Unrecognized command: " << cmd << std::endl;
         }
 
-        B.display();
+        G.display();
 
     }
 
