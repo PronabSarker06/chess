@@ -75,12 +75,12 @@ int main () {
         while (white == PLAYERTYPE::HUMAN || black == PLAYERTYPE::HUMAN){
 
             if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
-                G.getBoard()->makeMove(whiteComp.cMove(G.getBoard()));
+                G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
             }
             if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
-                G.getBoard()->makeMove(blackComp.cMove(G.getBoard()));
+                G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
             }
@@ -144,12 +144,12 @@ int main () {
         //Two computer players fight
         while (true) {
             if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
-                G.getBoard()->makeMove(whiteComp.cMove(G.getBoard()));
+                G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
             }
             if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
-                G.getBoard()->makeMove(blackComp.cMove(G.getBoard()));
+                G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
             }

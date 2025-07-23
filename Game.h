@@ -25,7 +25,6 @@ class Game {
         void display();
         bool gameOn();
         char getTurn();
-        Board* getBoard();
         void flipTurn();
 
         Game();

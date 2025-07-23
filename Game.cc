@@ -122,10 +122,6 @@ char Game::getTurn() {
     return whoseTurn;
 }
 
-Board* Game::getBoard() {
-    return &board;
-}
-
 void Game::flipTurn() {
     if (whoseTurn == 'w') {
         whoseTurn = 'b';

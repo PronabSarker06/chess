@@ -5,5 +5,5 @@ class ComputerPlayer {
     char colour;
     public:
         ComputerPlayer(int lvl, char colour);
-        Move cMove (Board* b);
+        Move cMove (Board& b);
 };
