@@ -24,6 +24,8 @@ class Board {
     std::vector<char> displayGrid; 
     Xwindow graphicDisplay;
     std::stack<Move> history;
+    Position whiteKingPosn{0,0};
+    Position blackKingPosn{0,0};
 
     public:
         Board();
@@ -39,6 +41,8 @@ class Board {
         std::vector<std::unique_ptr<Piece>>& getGrid () { return grid; }
         Piece* getPieceAt(const Position pos);
         std::vector<char>& getDisplayGrid();
+        void setWhiteKingPosn(Position p);
+        void setBlackKingPosn(Position p);
 };
 
 #endif
