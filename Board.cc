@@ -38,8 +38,6 @@ Board::Board() : graphicDisplay (550, 550) {
         }
         else { 
             grid.push_back(std::make_unique<King>((preset[i] == 'k' ? 'b' : 'w'), Position{i%8, i/8}, this));
-            if (preset[i] == 'k') blackKingPosn = Position{i%8, i/8};
-            else whiteKingPosn = Position{i%8, i/8};
         }
     }
 }
@@ -177,8 +175,6 @@ bool Board::makeMove(Move m) {
 
     //Update piece info
     m.getPieceMoved()->modPos(m.getTo());
-    if (m.getPieceMoved()->getType() == 'k') m.getPieceMoved()->getColour() == 'w'? whiteKingPosn = m.getTo() : blackKingPosn = m.getTo(); // updates kingPos's
-
     displayGrid[m.getTo().to1D()] = displayGrid[m.getFrom().to1D()];
     drawTile(m.getTo(), displayGrid[m.getTo().to1D()]);
 
@@ -365,7 +361,7 @@ std::vector<char>& Board::getDisplayGrid() {
     return displayGrid;
 }
 
-bool Board::isCheckmate (char colour) { // use new kingPosns
+bool Board::isCheckmate (char colour) {
 
     char target = colour == 'b' ? 'k' : 'K';
     Piece* king = nullptr;
@@ -379,11 +375,4 @@ bool Board::isCheckmate (char colour) { // use new kingPosns
 
     return false;
 
-}
-
-void Board::setWhiteKingPosn(Position p) { 
-    whiteKingPosn = p;
-}
-void Board::setBlackKingPosn(Position p) { 
-    blackKingPosn = p;
 }
