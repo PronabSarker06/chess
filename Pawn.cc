@@ -99,7 +99,26 @@ std::vector<Move> Pawn::getLegalMoves() {
             result.emplace_back(capright);
         }
     }
-    
+
+    // Check En Passant
+    if (!bptr->getHistory().empty()) {
+        // Since En Passant is temporary, check last move
+        Move last = bptr->getHistory().top();
+        // En Passant can only follow a double move, so check distance = 2
+        if (last.getPieceMoved()->getType() == 'p'
+        && last.getPieceMoved()->getColour() != colour
+        && abs(last.getFrom().getRow() - last.getTo().getRow()) == 2) {
+            // Check if adjacent to pawn
+            if (position.getRow() == last.getTo().getRow()
+            && abs(position.getCol() - last.getTo().getCol()) == 1) {
+                Position captureP(last.getTo().getCol(), 
+                                position.getRow() + colourFactor);
+                Move ep(position, captureP, this, nullptr);
+                result.emplace_back(ep);
+            }
+        }
+    }
+
     return result;
 
 }

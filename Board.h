@@ -16,6 +16,7 @@
 #include <memory>
 #include <iostream>
 #include <stack>
+#include <algorithm>
 
 class Board { 
 
@@ -31,8 +32,8 @@ class Board {
         bool makeMove(Move m);
         void display();
         void initGraphics();
+        std::stack<Move>& getHistory();
         void drawTile(Position pos, char piece = '0');
-        bool passantable(Pawn& p);
         void castle(King &k, Rook &r);
         bool isAttacked(Position square, char enemy_colour);
         std::vector<std::unique_ptr<Piece>>& getGrid () { return grid; }

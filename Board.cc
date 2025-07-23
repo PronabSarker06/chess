@@ -107,6 +107,10 @@ void Board::initGraphics() {
 
 }
 
+std::stack<Move>& Board::getHistory() {
+    return history;
+}
+
 void Board::drawTile(Position pos, char piece) {
 
     const int padding = 25;
@@ -141,13 +145,32 @@ bool inLegalMoves(const Move m, Piece* p) {
 
 bool Board::makeMove(Move m) {
 
-    // record move in history
-    history.push(m);
-
     //Leave if not legal
     if (!inLegalMoves(m, getPieceAt(m.getFrom()))) {
         std::cout << "Not a valid move.\n";
         return false;
+    }
+
+    // En passant
+    // Note: if a valid capturing pawn move lands in empty, then en passant
+    if (m.getPieceMoved()->getType() == 'p'
+    && m.getFrom().getCol() != m.getTo().getCol()
+    && !m.getCap()
+    && getDisplayGrid()[m.getTo().to1D()] == '0') {
+        
+        // Find and remove captured pawn not on landing square
+        Position capturedP(m.getTo().getCol(), m.getFrom().getRow());
+        if (Piece* captured = getPieceAt(capturedP)) {
+            for (auto it = grid.begin(); it != grid.end(); ++it) {
+                if (it->get() == captured) {
+                    grid.erase(it);
+                    break;
+                }
+            }
+            // Update display
+            displayGrid[capturedP.to1D()] = '0';
+            drawTile(capturedP);
+        }
     }
 
     //Update piece info
@@ -225,6 +248,8 @@ bool Board::makeMove(Move m) {
     drawTile(m.getFrom()); //draw over old square
     m.getPieceMoved()->setMoved();
 
+    // record move in history
+    history.push(m);
     return true;
 
 }
