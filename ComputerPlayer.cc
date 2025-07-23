@@ -2,7 +2,16 @@
 
 ComputerPlayer::ComputerPlayer(int l, char c) : level{l}, colour{c} {};
 
-Move ComputerPlayer::lv1Move(Board* b) { // finds first piece of same colour in grid, returns first legal move
+Move ComputerPlayer::Move(Board* b) { 
+    switch (level) { 
+        case 1: lv1Move(b, colour);
+        case 2: lv2Move(b, colour);
+        case 3: lv3Move(b, colour);
+        case 4: lv4Move(b, colour);
+    }
+}
+
+Move lv1Move(Board* b, char colour) { // finds first piece of same colour in grid, returns first legal move
     for (size_t i = 0; i < b->getGrid().size(); ++i) { 
         if (b->getGrid()[i].get()->getColour() == colour) { 
             Piece* p = b->getGrid()[i].get();
@@ -11,7 +20,7 @@ Move ComputerPlayer::lv1Move(Board* b) { // finds first piece of same colour in 
     }
 }
 
-Move ComputerPlayer::lv2Move(Board* b) { 
+Move lv2Move(Board* b, char colour) { 
     for (size_t i = 0; i < b->getGrid().size(); ++i) { 
         if (b->getGrid()[i].get()->getColour() == colour) { 
             Piece* p = b->getGrid()[i].get();
@@ -22,14 +31,14 @@ Move ComputerPlayer::lv2Move(Board* b) {
         }
     }
 
-    return lv1Move(b); // else returns lv1Move
+    return lv1Move(b, colour); // else returns lv1Move
 
 }
 
-Move ComputerPlayer::lv3Move(Board* b) { 
+Move lv3Move(Board* b, char colour) { 
     
 }
 
-Move ComputerPlayer::lv4Move(Board* b) { 
+Move lv4Move(Board* b, char colour) { 
     
 }
