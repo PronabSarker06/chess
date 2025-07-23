@@ -14,6 +14,13 @@ bool Setup::valid() {
     }
 
     if (whiteKingCount == 1 && blackKingCount == 1) { 
+        for (int i = 0; i < b->getGrid().size(); ++i) { 
+            Piece* p = b->getGrid()[i].get();
+            if (p->getType() == 'k') {
+                p->getColour() == 'w' ? b->setWhiteKing(p->getPosition()) : b->setBlackKing(p->getPosition());
+            }
+        }
+        
         return true;
     }
     else { 

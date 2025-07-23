@@ -27,7 +27,16 @@ Move lv2Move(Board& b, char colour) {
 }
 
 Move lv3Move(Board& b, char colour) { 
-    
+    for (size_t i = 0; i < b.getGrid().size(); ++i) { 
+        if (b.getGrid()[i].get()->getColour() == colour) { 
+            Piece* p = b.getGrid()[i].get();
+            for (auto &move : p->getLegalMoves()) { 
+                if (!b.isAttacked(move.getTo(), (colour == 'w'? 'b' : 'w'))) return move;
+            }
+        }
+    }
+
+    return lv2Move(b, colour);
 }
 
 Move lv4Move(Board& b, char colour) { 
