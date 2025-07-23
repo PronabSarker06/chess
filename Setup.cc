@@ -28,6 +28,8 @@ void Setup::removePiece(Position p) {
             break;
         }
     }
+
+    b->drawTile(p);
 }
 
 void Setup::addPiece(Position p, char colour, char type) { 
@@ -45,4 +47,5 @@ void Setup::addPiece(Position p, char colour, char type) {
     }
 
     b->getGrid().emplace_back(newPiece);
+    b->drawTile(p, (colour == 'w' ? std::toupper(type) : type));
 }
