@@ -95,11 +95,7 @@ void Game::makeMove(char fCol, char fRow, char tCol, char tRow, char promo) {
     } else if (p->getColour() != whoseTurn) {
         std::cout << "Cannot move your enemy's pieces." << std::endl;
     } else if (board.makeMove({f, t, p, board.getPieceAt(t), promo})){
-        if (whoseTurn == 'w') {
-            whoseTurn = 'b';
-        } else {
-            whoseTurn = 'w';
-        }
+        flipTurn();
     }
 }
 
@@ -120,4 +116,16 @@ void Game::startGame() {
 
 char Game::getTurn() {
     return whoseTurn;
+}
+
+Board* Game::getBoard() {
+    return &board;
+}
+
+void Game::flipTurn() {
+    if (whoseTurn == 'w') {
+        whoseTurn = 'b';
+    } else {
+        whoseTurn = 'w';
+    }
 }

@@ -9,15 +9,54 @@
 #include "Queen.h"
 #include "King.h"
 #include "Game.h"
+#include "ComputerPlayer.h"
 #include <iostream>
 #include <sstream>
 #include <algorithm>
+
+enum PLAYERTYPE {HUMAN, COMP};
+
+const int FAIL = -1;
+
+//Read in player given cmd s
+//returns -1 for failed read
+//0 = human
+//1, 2, 3, 4 for computer level
+int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, char colour) {
+    if (s == "human") {
+        player = PLAYERTYPE::HUMAN;
+        return 0;
+    }
+    else{
+        std::istringstream iss {s};
+        std::string firstPart = "";
+        int lettersRead = 0;
+        int level;
+        char c;
+        //Ensure the string starts with "computer"
+        while (lettersRead < 8 && iss >> c){
+            firstPart += c;
+            lettersRead++;
+        }
+        iss >> level; //Read level
+        std::cout << firstPart << ' ' << level << '\n';
+        if (firstPart == "computer" && 1 <= level && level <= 4){
+            player = PLAYERTYPE::COMP;
+            compPlayer = ComputerPlayer (level, colour);
+            return level;
+        }
+        return FAIL;
+    }
+} 
 
 int main () {
 
     std::cout << "Welcome to Chess :D" << std::endl;
 
     int whiteScore = 0, blackScore = 0;
+    PLAYERTYPE white = PLAYERTYPE::HUMAN;
+    PLAYERTYPE black = PLAYERTYPE::HUMAN;
+    ComputerPlayer whiteComp (1, 'w'), blackComp (1, 'b');
 
     //Wrap in outer loop to reinstantiate Game after it completes
     while (true) {
@@ -33,7 +72,20 @@ int main () {
 
         //Read whole line
         std::string line;
-        while (std::getline(std::cin, line)){
+        while (white == PLAYERTYPE::HUMAN || black == PLAYERTYPE::HUMAN){
+
+            if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
+                G.getBoard()->makeMove(whiteComp.cMove(G.getBoard()));
+                G.display();
+                G.flipTurn();
+            }
+            if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
+                G.getBoard()->makeMove(blackComp.cMove(G.getBoard()));
+                G.display();
+                G.flipTurn();
+            }
+
+            if (!std::getline(std::cin, line)) break; //EOF
             std::istringstream iss {line};
             //Read the first word of the line, the command
             std::string cmd;
@@ -41,14 +93,9 @@ int main () {
             if (cmd == "game") {
                 std::string player1 = "", player2 = "";
                 iss >> player1 >> player2;
-                if (player1 == "human") {
-                    if (player2 == "human"){
-                        G.startGame();
-                    }
-                }
-                else{
-                    
-                }
+                if (readPlayer(player1, white, whiteComp, 'w') == FAIL) std::cout << "Invalid white player" << std::endl;
+                else if (readPlayer(player2, black, blackComp, 'b') == FAIL) std::cout << "Invalid black player" << std::endl;
+                else G.startGame();
             }
             else if (cmd == "move"){
                 if (G.gameOn()){
@@ -78,6 +125,20 @@ int main () {
 
             G.display();
 
+        }
+
+        //Two computer players fight
+        while (true) {
+            if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
+                G.getBoard()->makeMove(whiteComp.cMove(G.getBoard()));
+                G.display();
+                G.flipTurn();
+            }
+            if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
+                G.getBoard()->makeMove(blackComp.cMove(G.getBoard()));
+                G.display();
+                G.flipTurn();
+            }
         }
 
         //If no more input
