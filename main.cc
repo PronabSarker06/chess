@@ -104,6 +104,20 @@ int main () {
                     char promo = '0';
                     iss >> promo;
                     G.makeMove(fCol, fRow, tCol, tRow, promo);
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    if (condition) {
+                        if (condition == 2) {
+                            // checkmate
+                            if (G.getTurn() == 'w') blackScore++;
+                            else whiteScore++;
+                            break;
+                        } else if (condition == 1) {
+                            // stalemate: draw
+                            blackScore += 0.5;
+                            whiteScore += 0.5;
+                            break;
+                        }
+                    }
                 }
                 else std::cout << "No active game. Please start a game using \"game <whiteplayer> <blackplayer>\"" << std::endl;
             }

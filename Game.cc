@@ -10,6 +10,10 @@ Game::Game() : whoseTurn{'w'}, board{}, moveHistory{} {
     board.initGraphics(); //init X11
 }
 
+Board& Game::getBoard() {
+    return board;
+}
+
 bool validPiece (char p) {
     for (auto& c : validPieces) if (c == p) return true;
     return false;

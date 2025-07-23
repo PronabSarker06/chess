@@ -16,6 +16,7 @@ class Game {
     bool gameActive = false;
 
     public:
+        Board& getBoard();
         void startGame();
         void setup();
         void resign();
