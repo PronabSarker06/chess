@@ -111,6 +111,22 @@ std::stack<Move>& Board::getHistory() {
     return history;
 }
 
+Position Board::getWhiteKing() {
+    return white_king;
+}
+
+void Board::setWhiteKing(Position p) {
+    white_king = p;
+}
+
+Position Board::getBlackKing() {
+    return black_king;
+}
+
+void Board::setBlackKing(Position p) {
+    black_king = p;
+}
+
 void Board::drawTile(Position pos, char piece) {
 
     const int padding = 25;
@@ -248,6 +264,14 @@ bool Board::makeMove(Move m) {
     drawTile(m.getFrom()); //draw over old square
     m.getPieceMoved()->setMoved();
 
+    // record Position of the kings
+    if (m.getPieceMoved()->getType() == 'K') {
+        setWhiteKing(m.getTo());
+    }
+    if (m.getPieceMoved()->getType() == 'k') {
+        setBlackKing(m.getTo());
+    }
+
     // record move in history
     history.push(m);
     return true;
@@ -361,18 +385,14 @@ std::vector<char>& Board::getDisplayGrid() {
     return displayGrid;
 }
 
-bool Board::isCheckmate (char colour) {
-
-    char target = colour == 'b' ? 'k' : 'K';
-    Piece* king = nullptr;
-
-    //Find where king is on board
-    for (int i = 0; i < 64; i++) {
-        if (displayGrid[i] == target){
-            king = getPieceAt(Position{i % 8, i / 8});
+int Board::isCheckStalemate(char colour) {
+    Position kingPos = (colour == 'w') ? getWhiteKing() : getBlackKing();
+    bool inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
+    for (const auto& piece : grid) {
+        if (piece->getColour() == colour && !piece->getLegalMoves().empty()) {
+            return 0;  // Has legal moves: neither condition
         }
     }
-
-    return false;
-
+    // No legal moves found
+    return inCheck ? 2 : 1;  // 2 if checkmate, 1 if stalemate
 }
