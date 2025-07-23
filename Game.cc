@@ -80,7 +80,14 @@ void Game::makeMove(char fCol, char fRow, char tCol, char tRow, char promo) {
     //Create pos
     Position f = {fCol - 'a', 7 - fRow};
     Position t = {tCol - 'a', 7 - tRow};
+
+    if (!f.valid() || !t.valid()){
+        std::cout << "Invalid position(s) entered" << std::endl;
+        return;
+    } 
+
     Piece* p = board.getPieceAt(f);
+
     //Handle turn
     //No piece
     if (p == nullptr) {
@@ -109,4 +116,8 @@ void Game::startGame() {
         std::cout << "Game is already active" << std::endl;
     }
     else gameActive = true;
+}
+
+char Game::getTurn() {
+    return whoseTurn;
 }

@@ -23,6 +23,7 @@ class Game {
         void makeMove(char, char, char, char, char);
         void display();
         bool gameOn();
+        char getTurn();
 
         Game();
 };
