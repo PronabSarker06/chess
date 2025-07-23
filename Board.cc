@@ -10,7 +10,7 @@ const char preset[BOARD_SIZE] {
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-    'R', '0', '0', '0', 'K', 'B', 'N', 'R', // row 1
+    'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R', // row 1
 };
 
 Board::Board() : graphicDisplay (550, 550) { 
@@ -163,14 +163,14 @@ bool Board::makeMove(Move m) {
         grid.erase(it);
     }
 
-    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getCol() - m.getTo().getCol()) > 1) { //segfault 
+    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getCol() - m.getTo().getCol()) > 1) {  // castling
         Position oldPos = {0, 0};
         Position newPos = {0, 0};
-        if (m.getFrom().getRow() - m.getTo().getRow() == 2) {  // king
-            newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
-            oldPos = {m.getTo().getCol() - 1, m.getTo().getRow()};
+        if (m.getTo().getCol() > m.getFrom().getCol()) {  // king side castle
+            newPos = {m.getTo().getCol() - 1, m.getTo().getRow()};
+            oldPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
         }
-        else { // queen
+        else { // queen side castle
             newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
             oldPos = {m.getTo().getCol() - 2, m.getTo().getRow()};
         }
@@ -225,50 +225,6 @@ bool Board::makeMove(Move m) {
     return true;
 
 }
-
-/*void Board::castle(King &k, Rook &r) {
-    if (k.getColour() == 'b') {
-        if (r.getPosition().getCol() == 7) {
-            // King Side
-            // Move pieces
-            grid[7 * 8 + 6] = std::move(grid[7 * 8 + 4]);
-            grid[7 * 8 + 5] = std::move(grid[7 * 8 + 7]);
-            // Positions update
-            grid[7 * 8 + 6]->modPos(Position{6, 7});
-            grid[7 * 8 + 5]->modPos(Position{5, 7});
-            // Set moved flags
-            grid[7 * 8 + 6]->setMoved();
-            grid[7 * 8 + 5]->setMoved();
-        } else if (r.getPosition().getCol() == 0) {
-            // Queen Side
-            grid[7 * 8 + 2] = std::move(grid[7 * 8 + 4]);
-            grid[7 * 8 + 3] = std::move(grid[7 * 8 + 0]);
-            grid[7 * 8 + 2]->modPos(Position{2, 7});
-            grid[7 * 8 + 3]->modPos(Position{3, 7});
-            grid[7 * 8 + 2]->setMoved();
-            grid[7 * 8 + 3]->setMoved();
-        }
-    } else if (k.getColour() == 'w') {
-        if (r.getPosition().getCol() == 7) {
-            // King Side
-            grid[0 * 8 + 6] = std::move(grid[0 * 8 + 4]);
-            grid[0 * 8 + 5] = std::move(grid[0 * 8 + 7]);
-            grid[0 * 8 + 6]->modPos(Position{6, 0});
-            grid[0 * 8 + 5]->modPos(Position{5, 0});
-            grid[0 * 8 + 6]->setMoved();
-            grid[0 * 8 + 5]->setMoved();
-        } else if (r.getPosition().getCol() == 0) {
-            // Queen Side
-            grid[0 * 8 + 2] = std::move(grid[0 * 8 + 4]);
-            grid[0 * 8 + 3] = std::move(grid[0 * 8 + 0]);
-            grid[0 * 8 + 2]->modPos(Position{2, 0});
-            grid[0 * 8 + 3]->modPos(Position{3, 0});
-            grid[0 * 8 + 2]->setMoved();
-            grid[0 * 8 + 3]->setMoved();
-        }
-    }
-}
-*/
 
 bool Board::isAttacked(Position square, char enemy_colour) {
     // Check if enemy knights are attacking the square
