@@ -87,6 +87,10 @@ int main () {
 
     }
 
+    std::cout << "Final Score" << std::endl;
+    std::cout << "White: " << whiteScore << std::endl;
+    std::cout << "Black: " << blackScore << std::endl;
+
     return 0;
 
 }
