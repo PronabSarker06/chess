@@ -15,13 +15,14 @@
 #include <vector>
 #include <memory>
 #include <iostream>
+#include <stack>
 
 class Board { 
 
     std::vector<std::unique_ptr<Piece>> grid;
     std::vector<char> displayGrid; 
-    bool whiteInCheck, blackInCheck;
     Xwindow graphicDisplay;
+    std::stack<Move> history;
 
     public:
         Board();

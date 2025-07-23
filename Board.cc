@@ -141,6 +141,9 @@ bool inLegalMoves(const Move m, Piece* p) {
 
 bool Board::makeMove(Move m) {
 
+    // record move in history
+    history.push(m);
+
     //Leave if not legal
     if (!inLegalMoves(m, getPieceAt(m.getFrom()))) {
         std::cout << "Not a valid move.\n";
