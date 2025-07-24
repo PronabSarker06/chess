@@ -11,15 +11,16 @@ class Position {
     int row;
 
     public:
-        
+
         Position(int _col, int _row);
-        int to1D();
         int getCol() const;
         int getRow() const;
-        bool operator== (const Position& other);
+        
+        int to1D();
         bool valid();
 
         friend std::ostream& operator<< (std::ostream& out, const Position& pos);
+        bool operator== (const Position& other);
 
 };
 
