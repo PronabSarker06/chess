@@ -265,11 +265,9 @@ bool Board::makeMove(Move m) {
     m.getPieceMoved()->setMoved();
 
     // record Position of the kings
-    if (m.getPieceMoved()->getType() == 'K') {
-        setWhiteKing(m.getTo());
-    }
     if (m.getPieceMoved()->getType() == 'k') {
-        setBlackKing(m.getTo());
+        if (m.getPieceMoved()->getColour() == 'w')setWhiteKing(m.getTo());
+        else setBlackKing(m.getTo());
     }
 
     // record move in history
