@@ -74,7 +74,8 @@ int pieceValue(char p) {
 }
 
 Move lv4Move(Board& b, char colour) {
-    Move bestMove = lv1Move(b, colour); // default fallback
+    Move random = lv1Move(b, colour); // default fallback
+    Move bestMove = random;
     int max_score = INT_MIN;
     for (size_t i = 0; i < b.getGrid().size(); ++i) {
         Piece* p = b.getGrid()[i].get();
@@ -101,7 +102,11 @@ Move lv4Move(Board& b, char colour) {
             }
         }
     }
-    return bestMove;
+    if (max_score >= 0) {
+        return bestMove;
+    } else {
+        return random;
+    }
 }
 
 Move ComputerPlayer::cMove(Board& b) { 
