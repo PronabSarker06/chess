@@ -13,7 +13,7 @@ bool Setup::valid() {
         }
     }
 
-    //Check for pawn on first or last row
+    // Check for pawn on first or last row
     for (int i = 0; i < 8; i++){
         if (b->getPieceAt({i, 0}) && b->getPieceAt({i, 0})->getType() == 'p' || b->getPieceAt({i, 7}) && b->getPieceAt({i, 7})->getType() == 'p'){
             std::cout << "Error: Pawn on first or last row" << std::endl;

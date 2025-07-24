@@ -7,7 +7,8 @@
 const std::vector<char> validPieces = {'p', 'n', 'b', 'q', 'k', 'r'};
 
 Game::Game() : whoseTurn{'w'}, board{}, moveHistory{} {
-    board.initGraphics(); //init X11
+    // Init X11
+    board.initGraphics();
 }
 
 Board& Game::getBoard() {
@@ -23,7 +24,7 @@ void Game::setup() {
 
     Setup S {&board};
 
-    //Clear board
+    // Clear board
     for (int i = 0; i < 8; i++){
             S.removePiece({i, 0});
             S.removePiece({i, 1});
@@ -60,7 +61,6 @@ void Game::setup() {
             int row;
             iss >> col >> row;
             Position pos {col - 'a', 8 - row};
-            //std::cout << pos << '\n';
             if (pos.valid()){
                 S.removePiece(pos);
             }
@@ -82,14 +82,13 @@ void Game::setup() {
             std::cout << "Error, please enter a valid command" << std::endl;
         }
     }
-
 }
 
 void Game::makeMove(char fCol, char fRow, char tCol, char tRow, char promo) {
-    //Make 0 indexing
+    // Make 0 indexing
     fRow--;
     tRow--;
-    //Create pos
+    // Create pos
     Position f = {fCol - 'a', 7 - fRow};
     Position t = {tCol - 'a', 7 - tRow};
 
@@ -100,8 +99,8 @@ void Game::makeMove(char fCol, char fRow, char tCol, char tRow, char promo) {
 
     Piece* p = board.getPieceAt(f);
 
-    //Handle turn
-    //No piece
+    // Handle turn
+    // No piece
     if (p == nullptr) {
         std::cout << "No piece located there." << std::endl;
     } else if (p->getColour() != whoseTurn) {

@@ -8,14 +8,15 @@ Pawn::Pawn(char c, Position p, Board* bptr)
 std::vector<Move> Pawn::getLegalMoves() {
 
     std::vector<Move> result;
-    int colourFactor = colour == 'b' ? 1 : -1; //flip direction depending on color
 
-    //moving forward by 1
-    //if nothing blocking the pawn
-    Position f1pos = {position.getCol(), position.getRow() + 1 * colourFactor}; // add promo
+    // Flip direction depending on color
+    int colourFactor = colour == 'b' ? 1 : -1;
+
+    // Moving forward by 1 if nothing blocking the pawn. Also consider promotions
+    Position f1pos = {position.getCol(), position.getRow() + 1 * colourFactor};
     if (f1pos.valid() && bptr->getDisplayGrid()[f1pos.to1D()] == '0'){
         if (position.getRow() == (colour == 'b' ? 6 : 1)) {
-            Move knightPromo = {position, f1pos, this, nullptr, 'N'}; // promo moves
+            Move knightPromo = {position, f1pos, this, nullptr, 'N'};
             Move bishopPromo = {position, f1pos, this, nullptr, 'B'}; 
             Move rookPromo = {position, f1pos, this, nullptr, 'R'}; 
             Move queenPromo = {position, f1pos, this, nullptr, 'Q'}; 
@@ -26,17 +27,15 @@ std::vector<Move> Pawn::getLegalMoves() {
             if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
         } else { 
             Move forward1 = {position, f1pos, this, nullptr, '0'};
-            //std::cout << "Kingsafe? " << kingSafe(forward1) << '\n';
             if (kingSafe(forward1)) result.emplace_back(forward1);
         }
     }
     
-    //try moving up 2
-    //only if first move, can go up 2, check nothing blocks
-    Position f2pos = {position.getCol(), position.getRow() + 2 * colourFactor}; // add promo (setup can have a pawn promote on first move)
+    // Move up 2 if first move and nothing blocks. Also consider promos
+    Position f2pos = {position.getCol(), position.getRow() + 2 * colourFactor};
     if (!hasMoved && f2pos.valid() && bptr->getDisplayGrid()[f2pos.to1D()] == '0' && bptr->getDisplayGrid()[f1pos.to1D()] == '0'){
         if (position.getRow() == (colour == 'b' ? 5 : 2)) {
-            Move knightPromo = {position, f2pos, this, nullptr, 'N'}; // promo moves
+            Move knightPromo = {position, f2pos, this, nullptr, 'N'};
             Move bishopPromo = {position, f2pos, this, nullptr, 'B'}; 
             Move rookPromo = {position, f2pos, this, nullptr, 'R'}; 
             Move queenPromo = {position, f2pos, this, nullptr, 'Q'}; 
@@ -51,12 +50,12 @@ std::vector<Move> Pawn::getLegalMoves() {
         }
     }
 
-    // cap left
-    Position clpos = {position.getCol() - 1, position.getRow() + 1 * colourFactor}; // add promo
+    // Capture left. Also consider promo
+    Position clpos = {position.getCol() - 1, position.getRow() + 1 * colourFactor};
     Piece* p = bptr->getPieceAt(clpos);
     if (p && p->getColour() != colour) {
         if (position.getRow() == (colour == 'b' ? 6 : 1)) {
-            Move knightPromo = {position, clpos, this, p, 'N'}; // promo moves
+            Move knightPromo = {position, clpos, this, p, 'N'};
             Move bishopPromo = {position, clpos, this, p, 'B'}; 
             Move rookPromo = {position, clpos, this, p, 'R'}; 
             Move queenPromo = {position, clpos, this, p, 'Q'}; 
@@ -71,12 +70,12 @@ std::vector<Move> Pawn::getLegalMoves() {
         }
     }
 
-    //cap right
-    Position crpos = {position.getCol() + 1, position.getRow() + 1 * colourFactor}; // add promo
+    // Capture right. Also consider promo
+    Position crpos = {position.getCol() + 1, position.getRow() + 1 * colourFactor};
     p = bptr->getPieceAt(crpos);
     if (p && p->getColour() != colour) {
         if (position.getRow() == (colour == 'b' ? 6 : 1)) {
-            Move knightPromo = {position, crpos, this, p, 'N'}; // promo moves
+            Move knightPromo = {position, crpos, this, p, 'N'};
             Move bishopPromo = {position, crpos, this, p, 'B'}; 
             Move rookPromo = {position, crpos, this, p, 'R'}; 
             Move queenPromo = {position, crpos, this, p, 'Q'}; 

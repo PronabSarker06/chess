@@ -52,7 +52,6 @@ bool charAttack (Position square, std::vector<char>& grid) {
         };
         if (to.valid()) {
             char p = grid[to.to1D()];
-            //Piece* p = getPieceAt(to);
             if (p != '0' && pColour(p) == enemy_colour) {
                 char type = p;
                 if ((enemy_colour == 'w' && type == 'N')
@@ -150,9 +149,7 @@ bool Piece::kingSafe(Move m){
         if (colour == 'b' && cpy[i] == 'k') king = Position{i%8, i/8};
         if (colour == 'w' && cpy[i] == 'K') king = Position{i%8, i/8};
     }
-
-    //std::cout << "King: " << king << " and Kingsafe: " << !charAttack(king, cpy) << "and "<< m << '\n';
-
+    
     return !charAttack(king, cpy);
 
 }

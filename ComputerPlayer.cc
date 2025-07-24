@@ -3,8 +3,9 @@
 
 ComputerPlayer::ComputerPlayer(int l, char c) : level{l}, colour{c} {};
 
-Move lv1Move(Board& b, char colour) { // finds first piece of same colour in grid, returns first legal move
-
+Move lv1Move(Board& b, char colour) {
+    // Finds first piece of same colour in grid, returns first legal move
+    
     std::random_device rd;
     std::mt19937 gen(rd());
 
@@ -36,8 +37,8 @@ Move lv2Move(Board& b, char colour) {
         if (b.getGrid()[i].get()->getColour() == colour) { 
             Piece* p = b.getGrid()[i].get();
             for (auto &move : p->getLegalMoves()) { 
-                if (move.getCap()) return move; // returns a capturing move if possible
-                
+                // returns a capturing move if possible
+                if (move.getCap()) return move;
             }
         }
     }
@@ -117,4 +118,3 @@ Move ComputerPlayer::cMove(Board& b) {
         case 4: return lv4Move(b, colour);
     }
 }
-

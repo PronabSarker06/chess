@@ -3,14 +3,14 @@
 #define BOARD_SIZE 64
 
 const std::vector<char> preset {
-    'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 8
+    'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r',
     'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     '0', '0', '0', '0', '0', '0', '0', '0',
     'P', 'P', 'P', 'P', 'P', 'P', 'P', 'P',
-    'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R', // row 1
+    'R', 'N', 'B', 'Q', 'K', 'B', 'N', 'R',
 };
 
 Board::Board() : graphicDisplay (550, 550) { 
@@ -46,14 +46,14 @@ void Board::display() {
 
     for (int i = 0; i < 8; i++) {
 
-        std::cout << 8 - i << ' '; //side numbers
+        // Side numbers
+        std::cout << 8 - i << ' ';
 
         for (int j = 0; j < 8; j++) {
-            //Handle terminal display
+            // Handle terminal display
             if (displayGrid[i * 8 + j] == '0'){
                 std::cout << ((i + j) % 2 == 0 ? ' ' : '_') << ' ';
-            }
-            else {
+            } else {
                 std::cout << displayGrid[i * 8 + j] << ' ';
             }
         }
@@ -74,7 +74,7 @@ void Board::initGraphics() {
     const int padding = 25;
     int windowHeight = graphicDisplay.getHeight();
     int windowWidth = graphicDisplay.getWidth();
-    const int boardSize = windowHeight - 2 * padding; //size of board
+    const int boardSize = windowHeight - 2 * padding;
     int tileWidth = boardSize / 8;
     int tileHeight = boardSize / 8;
 
@@ -82,13 +82,13 @@ void Board::initGraphics() {
 
     for (int i = 0; i < 8; i++) {
 
-        //Side numbers
+        // Side numbers
         std::string num = std::to_string(8 - i);
         graphicDisplay.drawString(padding / 2, padding + tileHeight * i + tileHeight / 2, num);
 
-        //Setup initial tiles
+        // Setup initial tiles
         for (int j = 0; j < 8; j++) {
-            //Handle black / white tiles
+            // Handle black / white tiles
             if ((i + j) % 2 == 0) graphicDisplay.fillRectangle(padding + tileWidth * j, padding + tileHeight * i, tileWidth, tileHeight, 6);
             else graphicDisplay.fillRectangle(padding + tileWidth * j, padding + tileHeight * i, tileWidth, tileHeight, 5);
             if (displayGrid[i * 8 + j] != '0') {
@@ -96,10 +96,9 @@ void Board::initGraphics() {
                 graphicDisplay.drawString(padding + tileWidth * j + tileWidth / 2, padding + tileHeight * i + tileHeight / 2, s);
             }
         }
-
     }
 
-    //Draw bottom letters
+    // Draw bottom letters
     for (char c = 'a'; c <= 'h'; c++){
         std::string s {c};
         graphicDisplay.drawString(padding + tileWidth * (c - 'a') + tileWidth / 2, windowHeight - padding / 2, s);
@@ -198,26 +197,26 @@ bool Board::makeMove(Move m) {
     if (m.getCap()) {
         auto it = grid.begin();
         for (; it != grid.end(); it++){
-            if (it->get() == m.getCap()){
+            if (it->get() == m.getCap()) {
                 break;
             }
         }
         grid.erase(it);
     }
 
-    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getCol() - m.getTo().getCol()) > 1) {  // castling
+    // Castling
+    if (m.getPieceMoved()->getType() == 'k' && abs(m.getFrom().getCol() - m.getTo().getCol()) > 1) { 
         Position oldPos = {0, 0};
         Position newPos = {0, 0};
-        if (m.getTo().getCol() > m.getFrom().getCol()) {  // king side castle
+        if (m.getTo().getCol() > m.getFrom().getCol()) {
+            // king side castle
             newPos = {m.getTo().getCol() - 1, m.getTo().getRow()};
             oldPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
-        }
-        else { // queen side castle
+        } else {
+            // queen side castle
             newPos = {m.getTo().getCol() + 1, m.getTo().getRow()};
             oldPos = {m.getTo().getCol() - 2, m.getTo().getRow()};
         }
-
-        //std::cout << oldPos << " " << newPos << std::endl;
 
         Piece* r = getPieceAt(oldPos);
 
@@ -229,11 +228,10 @@ bool Board::makeMove(Move m) {
         drawTile(oldPos);
     }
 
-    // 4) Handle promotion
+    // Handle promotion
     if (m.getPromoType() != '0') {
 
         char colour = m.getPieceMoved()->getColour();
-        //std::cout << colour << '\n';
         Position pos = m.getTo();
 
         //Erase original piece
@@ -256,24 +254,22 @@ bool Board::makeMove(Move m) {
         grid.emplace_back(std::move(newPiece));
         displayGrid[pos.to1D()] = (colour=='b' ? tolower(m.getPromoType()) : toupper(m.getPromoType()));
         drawTile(pos, displayGrid[pos.to1D()]);
-
     }
 
     // Clear the origin square
     displayGrid[m.getFrom().to1D()] = '0';
-    drawTile(m.getFrom()); //draw over old square
+    drawTile(m.getFrom());
     m.getPieceMoved()->setMoved();
 
-    // record Position of the kings
+    // Record Position of the kings
     if (m.getPieceMoved()->getType() == 'k') {
         if (m.getPieceMoved()->getColour() == 'w')setWhiteKing(m.getTo());
         else setBlackKing(m.getTo());
     }
 
-    // record move in history
+    // Record move in history
     history.push(m);
     return true;
-
 }
 
 bool Board::isAttacked(Position square, char enemy_colour) {
@@ -310,8 +306,7 @@ bool Board::isAttacked(Position square, char enemy_colour) {
                 if (!to.valid()) break;
                 Piece* p = getPieceAt(to);
                 if (!p) continue; 
-                if (p->getColour() == enemy_colour) {
-                                    
+                if (p->getColour() == enemy_colour) {                
                     char type = p->getType();
                     bool isDiagonal = (abs(row_change) == abs(col_change));
                     if (enemy_colour == 'w') {
@@ -372,7 +367,6 @@ bool Board::isAttacked(Position square, char enemy_colour) {
 
 Piece* Board::getPieceAt(const Position pos) {
     for (const auto& piece : grid) {
-        //std::cout << piece.get()->getPosition() << ' ' << pos << '\n';
         if (piece.get()->getPosition() == pos) {
             return piece.get(); 
         }
@@ -389,7 +383,6 @@ int Board::isCheckStalemate(char colour, bool& inCheck) {
     inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
     for (const auto& piece : grid) {
         if (piece->getColour() == colour && piece->getLegalMoves().size() != 0) {
-            //std::cout << piece->getLegalMoves()[0] << std::endl;
             return 0;  // Has legal moves: neither condition
         }
     }

@@ -18,10 +18,10 @@ enum PLAYERTYPE {HUMAN, COMP};
 
 const int FAIL = -1;
 
-//Read in player given cmd s
-//returns -1 for failed read
-//0 = human
-//1, 2, 3, 4 for computer level
+// Read in player given cmd s
+// returns -1 for failed read
+// 0 = human
+// 1, 2, 3, 4 for computer level
 int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, char colour) {
     if (s == "human") {
         player = PLAYERTYPE::HUMAN;
@@ -38,8 +38,8 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
             firstPart += c;
             lettersRead++;
         }
-        iss >> level; //Read level
-        //std::cout << firstPart << ' ' << level << '\n';
+        //Read level
+        iss >> level;
         if (firstPart == "computer" && 1 <= level && level <= 4){
             player = PLAYERTYPE::COMP;
             compPlayer = ComputerPlayer (level, colour);
@@ -50,10 +50,8 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
 } 
 
 void scoreUpdate(int condition, double& whiteScore, double& blackScore, Game& G) {
-    //std::cout << "condition: " << condition << '\n';
     if (condition) {
         if (condition == 2) {
-            // checkmate
             if (G.getTurn() == 'w') {
                 std::cout << "Checkmate! Black wins!" << std::endl;
                 ++blackScore;
@@ -79,7 +77,7 @@ int main () {
     PLAYERTYPE black = PLAYERTYPE::HUMAN;
     ComputerPlayer whiteComp (1, 'w'), blackComp (1, 'b');
 
-    //Wrap in outer loop to reinstantiate Game after it completes
+    // Wrap in outer loop to reinstantiate Game after it completes
     while (true) {
 
         Game G; 
@@ -87,11 +85,7 @@ int main () {
         char fCol, tCol;
         int fRow, tRow;
 
-        //std::cout << "Current Score" << std::endl;
-        //std::cout << "White: " << whiteScore << std::endl;
-        //std::cout << "Black: " << blackScore << std::endl;
-
-        //Read whole line
+        // Read whole line
         std::string line;
         while (white == PLAYERTYPE::HUMAN || black == PLAYERTYPE::HUMAN){
 
@@ -120,8 +114,10 @@ int main () {
                 if (condition != 0) break;
             }
 
-            if (!std::getline(std::cin, line)) break; //EOF
+            //EOF
+            if (!std::getline(std::cin, line)) break;
             std::istringstream iss {line};
+
             //Read the first word of the line, the command
             std::string cmd;
             iss >> cmd;
@@ -139,7 +135,6 @@ int main () {
                     char promo = '0';
                     iss >> promo;
                     G.makeMove(fCol, fRow, tCol, tRow, promo);
-                    //std::cout << G.getTurn() << "'s turn \n";
                     bool inCheck = false;
                     int condition = G.getBoard().isCheckStalemate(G.getTurn(), inCheck);
                     if (inCheck && condition == 0) {
@@ -169,8 +164,8 @@ int main () {
                 }
                 break;
             }
-            //Invalid commands
             else{
+                //Invalid commands
                 std::cout << "Unrecognized command: " << cmd << std::endl;
             }
 
@@ -178,7 +173,7 @@ int main () {
 
         }
 
-        //Two computer players fight
+        // Two computer players fight
         if (white == PLAYERTYPE::COMP && black == PLAYERTYPE::COMP) { 
             while (true) {
                 if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
@@ -206,7 +201,8 @@ int main () {
                     if (condition != 0) break;
                 }
             }
-            white = PLAYERTYPE::HUMAN; //Reset state
+            //Reset state
+            white = PLAYERTYPE::HUMAN;
         }
 
         //If no more input
