@@ -49,6 +49,21 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
     }
 } 
 
+void scoreUpdate(int condition, int& whiteScore, int& blackScore, Game& G) {
+    std::cout << "condition: " << condition << '\n';
+    if (condition) {
+        if (condition == 2) {
+            // checkmate
+            if (G.getTurn() == 'w') blackScore++;
+            else whiteScore++;
+        } else if (condition == 1) {
+            // stalemate: draw
+            blackScore += 0.5;
+            whiteScore += 0.5;
+        }
+    }
+}
+
 int main () {
 
     std::cout << "Welcome to Chess :D" << std::endl;
@@ -78,11 +93,17 @@ int main () {
                 G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
+                int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                scoreUpdate(condition, whiteScore, blackScore, G);
+                if (condition != 0) break;
             }
             if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
                 G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
+                int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                scoreUpdate(condition, whiteScore, blackScore, G);
+                if (condition != 0) break;
             }
 
             if (!std::getline(std::cin, line)) break; //EOF
@@ -104,20 +125,10 @@ int main () {
                     char promo = '0';
                     iss >> promo;
                     G.makeMove(fCol, fRow, tCol, tRow, promo);
+                    std::cout << G.getTurn() << "'s turn \n";
                     int condition = G.getBoard().isCheckStalemate(G.getTurn());
-                    if (condition) {
-                        if (condition == 2) {
-                            // checkmate
-                            if (G.getTurn() == 'w') blackScore++;
-                            else whiteScore++;
-                            break;
-                        } else if (condition == 1) {
-                            // stalemate: draw
-                            blackScore += 0.5;
-                            whiteScore += 0.5;
-                            break;
-                        }
-                    }
+                    scoreUpdate(condition, whiteScore, blackScore, G);
+                    if (condition != 0) break;
                 }
                 else std::cout << "No active game. Please start a game using \"game <whiteplayer> <blackplayer>\"" << std::endl;
             }
@@ -142,17 +153,26 @@ int main () {
         }
 
         //Two computer players fight
-        while (true) {
-            if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
-                G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
-                G.display();
-                G.flipTurn();
+        if (white == PLAYERTYPE::COMP && black == PLAYERTYPE::COMP) { 
+            while (true) {
+                if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
+                    G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
+                    G.display();
+                    G.flipTurn();
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    scoreUpdate(condition, whiteScore, blackScore, G);
+                    if (condition != 0) break;
+                }
+                if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
+                    G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
+                    G.display();
+                    G.flipTurn();
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    scoreUpdate(condition, whiteScore, blackScore, G);
+                    if (condition != 0) break;
+                }
             }
-            if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
-                G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
-                G.display();
-                G.flipTurn();
-            }
+            white = PLAYERTYPE::HUMAN; //Reset state
         }
 
         //If no more input
@@ -161,6 +181,7 @@ int main () {
         }
 
     }
+    
 
     std::cout << "Final Score" << std::endl;
     std::cout << "White: " << whiteScore << std::endl;

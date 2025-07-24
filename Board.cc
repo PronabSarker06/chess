@@ -332,7 +332,7 @@ bool Board::isAttacked(Position square, char enemy_colour) {
         }
     }
     // Check pawn attacks
-    int dir = (enemy_colour == 'w') ? -1 : 1;
+    int dir = (enemy_colour == 'b') ? -1 : 1;
     Position pawns[2] = {
         {square.getCol() - 1, square.getRow() + dir},
         {square.getCol() + 1, square.getRow() + dir}
@@ -389,7 +389,8 @@ int Board::isCheckStalemate(char colour) {
     Position kingPos = (colour == 'w') ? getWhiteKing() : getBlackKing();
     bool inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
     for (const auto& piece : grid) {
-        if (piece->getColour() == colour && !piece->getLegalMoves().empty()) {
+        if (piece->getColour() == colour && piece->getLegalMoves().size() != 0) {
+            std::cout << piece->getLegalMoves()[0] << std::endl;
             return 0;  // Has legal moves: neither condition
         }
     }
