@@ -317,10 +317,8 @@ bool Board::isAttacked(Position square, char enemy_colour) {
                     char type = p->getType();
                     bool isDiagonal = (abs(row_change) == abs(col_change));
                     if (enemy_colour == 'w') {
-                        std::cout << "checking: " << to << " piece: " << p->getType() << '\n';
                         if ((isDiagonal && (type == 'b' || type == 'q'))
                         || (!isDiagonal && (type == 'r' || type == 'q'))) {
-                            std::cout << "HIT";
                             return true;
                         }
                     } else {
