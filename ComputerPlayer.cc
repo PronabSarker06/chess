@@ -1,7 +1,7 @@
 #include "ComputerPlayer.h" 
 #include <random>
 
-ComputerPlayer::ComputerPlayer(int l, char c) : level{l}, colour{c}, moveCount{0} {};
+ComputerPlayer::ComputerPlayer(int l, char c) : level{l}, colour{c} {};
 
 Move lv1Move(Board& b, char colour) { // finds first piece of same colour in grid, returns first legal move
 
@@ -59,35 +59,49 @@ Move lv3Move(Board& b, char colour) {
     return lv2Move(b, colour);
 }
 
-Move lv4Move(Board& b, char colour, int& mc) { 
-    if (mc < 5) { 
-        std::vector<Move> whiteOpening{ 
-            {{3, 6}, {3, 4}, b.getPieceAt({3, 6}), nullptr}, // queen's gambit
-            {{2, 6}, {2, 4}, b.getPieceAt({2, 6}), nullptr},
-            {{1, 7}, {2, 5}, b.getPieceAt({1, 7}), nullptr},
-            {{5, 7}, {6, 6}, b.getPieceAt({5, 7}), nullptr},
-            {{4, 7}, {3, 6}, b.getPieceAt({4, 7}), nullptr}
-        };
+int pieceValue(char p) {
+    if (p == 'p' || p == 'P') {
+        return 1;
+    } else if (p == 'b' || p == 'n' || p == 'B' || p == 'N') {
+        return 3;
+    } else if (p == 'r' || p == 'R') {
+        return 5;
+    } else if (p == 'q' || p == 'Q') {
+        return 9;
+    } else {
+        return 0;
+    }
+}
 
-        std::vector<Move> blackOpening{ 
-            {{3, 1}, {3, 3}, b.getPieceAt({3, 1}), nullptr}, // slav defense
-            {{2, 1}, {2, 3}, b.getPieceAt({2, 1}), nullptr},
-            {{1, 0}, {2, 2}, b.getPieceAt({1, 0}), nullptr},
-            {{5, 0}, {6, 2}, b.getPieceAt({5, 0}), nullptr},
-            {{4, 0}, {6, 0}, b.getPieceAt({4, 0}), nullptr} 
-        };
-
-        mc++;
-
-        if (colour == 'w') { 
-            if (b.getPieceAt(whiteOpening[mc-1].getFrom())) return whiteOpening[mc-1];
-            else return lv3Move(b, colour);
-        } else { 
-            if (b.getPieceAt(blackOpening[mc-1].getFrom())) return blackOpening[mc-1];
-            else return lv3Move(b, colour);
+Move lv4Move(Board& b, char colour) {
+    Move bestMove = lv1Move(b, colour); // default fallback
+    int max_score = INT_MIN;
+    for (size_t i = 0; i < b.getGrid().size(); ++i) {
+        Piece* p = b.getGrid()[i].get();
+        if (!p || p->getColour() != colour) {
+            continue;
+        }
+        for (auto &move : p->getLegalMoves()) {
+            // only check captures
+            if (!move.getCap()) {
+                continue; 
+            }
+            // Evaluate position: captured value - our piece value (if position is attacked)
+            int score;
+            int plus = pieceValue(move.getCap()->getType());
+            int minus = pieceValue(p->getType());
+            score = plus;
+            if (b.isAttacked(move.getTo(), (colour == 'w' ? 'b' : 'w'))) {
+                score -= minus;
+            }
+            // Update if evaluation is better than scored position
+            if (score > max_score) {
+                max_score = score;
+                bestMove = move;
+            }
         }
     }
-    else return lv3Move(b, colour);
+    return bestMove;
 }
 
 Move ComputerPlayer::cMove(Board& b) { 
@@ -95,7 +109,7 @@ Move ComputerPlayer::cMove(Board& b) {
         case 1: return lv1Move(b, colour);
         case 2: return lv2Move(b, colour);
         case 3: return lv3Move(b, colour);
-        case 4: return lv4Move(b, colour, moveCount);
+        case 4: return lv4Move(b, colour);
     }
 }
 
