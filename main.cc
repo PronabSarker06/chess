@@ -54,10 +54,15 @@ void scoreUpdate(int condition, int& whiteScore, int& blackScore, Game& G) {
     if (condition) {
         if (condition == 2) {
             // checkmate
-            if (G.getTurn() == 'w') blackScore++;
-            else whiteScore++;
+            if (G.getTurn() == 'w') {
+                std::cout << "Checkmate! Black wins!" << std::endl;
+                ++blackScore;
+            } else {
+                std::cout << "Checkmate! White wins!" << std::endl;
+                ++whiteScore;
+            }
         } else if (condition == 1) {
-            // stalemate: draw
+            std::cout << "Stalemate!" << std::endl;
             blackScore += 0.5;
             whiteScore += 0.5;
         }
@@ -139,8 +144,13 @@ int main () {
                 else G.setup();
             }
             else if (cmd == "resign"){
-                if (G.getTurn() == 'w') blackScore++;
-                else whiteScore++;
+                if (G.getTurn() == 'w') {
+                    std::cout << "Black wins!" << std::endl;
+                    ++blackScore;
+                } else {
+                    std::cout << "White wins!" << std::endl;
+                    ++whiteScore;
+                }
                 break;
             }
             //Invalid commands
