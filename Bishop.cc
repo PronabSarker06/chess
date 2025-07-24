@@ -33,12 +33,6 @@ std::vector<Move> Bishop::getLegalMoves() {
         }
     }
 
-    std::cout << "Valid moves: ";
-    for (auto& m: result){
-        std::cout << m.getTo() << ", ";
-    }
-    std::cout << std::endl;
-
     return result;
 
 }

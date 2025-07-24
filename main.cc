@@ -39,7 +39,7 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
             lettersRead++;
         }
         iss >> level; //Read level
-        std::cout << firstPart << ' ' << level << '\n';
+        //std::cout << firstPart << ' ' << level << '\n';
         if (firstPart == "computer" && 1 <= level && level <= 4){
             player = PLAYERTYPE::COMP;
             compPlayer = ComputerPlayer (level, colour);
@@ -50,7 +50,7 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
 } 
 
 void scoreUpdate(int condition, int& whiteScore, int& blackScore, Game& G) {
-    std::cout << "condition: " << condition << '\n';
+    //std::cout << "condition: " << condition << '\n';
     if (condition) {
         if (condition == 2) {
             // checkmate
@@ -81,9 +81,9 @@ int main () {
         char fCol, tCol;
         int fRow, tRow;
 
-        std::cout << "Current Score" << std::endl;
-        std::cout << "White: " << whiteScore << std::endl;
-        std::cout << "Black: " << blackScore << std::endl;
+        //std::cout << "Current Score" << std::endl;
+        //std::cout << "White: " << whiteScore << std::endl;
+        //std::cout << "Black: " << blackScore << std::endl;
 
         //Read whole line
         std::string line;
@@ -125,7 +125,7 @@ int main () {
                     char promo = '0';
                     iss >> promo;
                     G.makeMove(fCol, fRow, tCol, tRow, promo);
-                    std::cout << G.getTurn() << "'s turn \n";
+                    //std::cout << G.getTurn() << "'s turn \n";
                     int condition = G.getBoard().isCheckStalemate(G.getTurn());
                     scoreUpdate(condition, whiteScore, blackScore, G);
                     if (condition != 0) break;

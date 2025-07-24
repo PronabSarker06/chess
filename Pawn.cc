@@ -71,10 +71,10 @@ std::vector<Move> Pawn::getLegalMoves() {
             Move rookPromo = {position, clpos, this, p, 'R'}; 
             Move queenPromo = {position, clpos, this, p, 'Q'}; 
 
+            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
             if (kingSafe(knightPromo)) result.emplace_back(knightPromo);
             if (kingSafe(bishopPromo)) result.emplace_back(bishopPromo);
             if (kingSafe(rookPromo)) result.emplace_back(rookPromo);
-            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
         } else { 
             Move capleft = {position, clpos, this, p, '0'};
             if (kingSafe(capleft)) result.emplace_back(capleft);
@@ -91,10 +91,10 @@ std::vector<Move> Pawn::getLegalMoves() {
             Move rookPromo = {position, crpos, this, p, 'R'}; 
             Move queenPromo = {position, crpos, this, p, 'Q'}; 
 
+            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
             if (kingSafe(knightPromo)) result.emplace_back(knightPromo);
             if (kingSafe(bishopPromo)) result.emplace_back(bishopPromo);
             if (kingSafe(rookPromo)) result.emplace_back(rookPromo);
-            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
         } else { 
             Move capright = {position, crpos, this, p, '0'};
             if (kingSafe(capright)) result.emplace_back(capright);

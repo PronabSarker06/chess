@@ -153,7 +153,7 @@ bool inLegalMoves(const Move m, Piece* p) {
     //std::cout << p->getType() << '\n';
     std::vector<Move> legalMoves = p->getLegalMoves();
     for (int i = 0; i < (int) legalMoves.size(); ++i) {
-        std::cout << legalMoves[i] << '\n';
+        //std::cout << legalMoves[i] << '\n';
         if (m == legalMoves[i]) return true;
     }
     return false;
@@ -217,7 +217,7 @@ bool Board::makeMove(Move m) {
             oldPos = {m.getTo().getCol() - 2, m.getTo().getRow()};
         }
 
-        std::cout << oldPos << " " << newPos << std::endl;
+        //std::cout << oldPos << " " << newPos << std::endl;
 
         Piece* r = getPieceAt(oldPos);
 
@@ -233,7 +233,7 @@ bool Board::makeMove(Move m) {
     if (m.getPromoType() != '0') {
 
         char colour = m.getPieceMoved()->getColour();
-        std::cout << colour << '\n';
+        //std::cout << colour << '\n';
         Position pos = m.getTo();
 
         //Erase original piece
@@ -390,7 +390,7 @@ int Board::isCheckStalemate(char colour) {
     bool inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
     for (const auto& piece : grid) {
         if (piece->getColour() == colour && piece->getLegalMoves().size() != 0) {
-            std::cout << piece->getLegalMoves()[0] << std::endl;
+            //std::cout << piece->getLegalMoves()[0] << std::endl;
             return 0;  // Has legal moves: neither condition
         }
     }
