@@ -39,7 +39,7 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
             lettersRead++;
         }
         iss >> level; //Read level
-        std::cout << firstPart << ' ' << level << '\n';
+        //std::cout << firstPart << ' ' << level << '\n';
         if (firstPart == "computer" && 1 <= level && level <= 4){
             player = PLAYERTYPE::COMP;
             compPlayer = ComputerPlayer (level, colour);
@@ -48,6 +48,26 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
         return FAIL;
     }
 } 
+
+void scoreUpdate(int condition, int& whiteScore, int& blackScore, Game& G) {
+    //std::cout << "condition: " << condition << '\n';
+    if (condition) {
+        if (condition == 2) {
+            // checkmate
+            if (G.getTurn() == 'w') {
+                std::cout << "Checkmate! Black wins!" << std::endl;
+                ++blackScore;
+            } else {
+                std::cout << "Checkmate! White wins!" << std::endl;
+                ++whiteScore;
+            }
+        } else if (condition == 1) {
+            std::cout << "Stalemate!" << std::endl;
+            blackScore += 0.5;
+            whiteScore += 0.5;
+        }
+    }
+}
 
 int main () {
 
@@ -66,9 +86,9 @@ int main () {
         char fCol, tCol;
         int fRow, tRow;
 
-        std::cout << "Current Score" << std::endl;
-        std::cout << "White: " << whiteScore << std::endl;
-        std::cout << "Black: " << blackScore << std::endl;
+        //std::cout << "Current Score" << std::endl;
+        //std::cout << "White: " << whiteScore << std::endl;
+        //std::cout << "Black: " << blackScore << std::endl;
 
         //Read whole line
         std::string line;
@@ -78,11 +98,17 @@ int main () {
                 G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
+                int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                scoreUpdate(condition, whiteScore, blackScore, G);
+                if (condition != 0) break;
             }
             if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
                 G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
+                int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                scoreUpdate(condition, whiteScore, blackScore, G);
+                if (condition != 0) break;
             }
 
             if (!std::getline(std::cin, line)) break; //EOF
@@ -104,20 +130,10 @@ int main () {
                     char promo = '0';
                     iss >> promo;
                     G.makeMove(fCol, fRow, tCol, tRow, promo);
+                    //std::cout << G.getTurn() << "'s turn \n";
                     int condition = G.getBoard().isCheckStalemate(G.getTurn());
-                    if (condition) {
-                        if (condition == 2) {
-                            // checkmate
-                            if (G.getTurn() == 'w') blackScore++;
-                            else whiteScore++;
-                            break;
-                        } else if (condition == 1) {
-                            // stalemate: draw
-                            blackScore += 0.5;
-                            whiteScore += 0.5;
-                            break;
-                        }
-                    }
+                    scoreUpdate(condition, whiteScore, blackScore, G);
+                    if (condition != 0) break;
                 }
                 else std::cout << "No active game. Please start a game using \"game <whiteplayer> <blackplayer>\"" << std::endl;
             }
@@ -128,8 +144,13 @@ int main () {
                 else G.setup();
             }
             else if (cmd == "resign"){
-                if (G.getTurn() == 'w') blackScore++;
-                else whiteScore++;
+                if (G.getTurn() == 'w') {
+                    std::cout << "Black wins!" << std::endl;
+                    ++blackScore;
+                } else {
+                    std::cout << "White wins!" << std::endl;
+                    ++whiteScore;
+                }
                 break;
             }
             //Invalid commands
@@ -142,17 +163,26 @@ int main () {
         }
 
         //Two computer players fight
-        while (true) {
-            if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
-                G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
-                G.display();
-                G.flipTurn();
+        if (white == PLAYERTYPE::COMP && black == PLAYERTYPE::COMP) { 
+            while (true) {
+                if (G.gameOn() && white == PLAYERTYPE::COMP && G.getTurn() == 'w'){
+                    G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
+                    G.display();
+                    G.flipTurn();
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    scoreUpdate(condition, whiteScore, blackScore, G);
+                    if (condition != 0) break;
+                }
+                if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
+                    G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
+                    G.display();
+                    G.flipTurn();
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    scoreUpdate(condition, whiteScore, blackScore, G);
+                    if (condition != 0) break;
+                }
             }
-            if (G.gameOn() && black == PLAYERTYPE::COMP && G.getTurn() == 'b') {
-                G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
-                G.display();
-                G.flipTurn();
-            }
+            white = PLAYERTYPE::HUMAN; //Reset state
         }
 
         //If no more input
@@ -161,6 +191,7 @@ int main () {
         }
 
     }
+    
 
     std::cout << "Final Score" << std::endl;
     std::cout << "White: " << whiteScore << std::endl;

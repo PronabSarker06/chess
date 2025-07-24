@@ -96,7 +96,7 @@ bool charAttack (Position square, std::vector<char>& grid) {
         }
     }
     // Check pawn attacks
-    int dir = (enemy_colour == 'w') ? -1 : 1;
+    int dir = (enemy_colour == 'b') ? -1 : 1;
     Position pawns[2] = {
         {square.getCol() - 1, square.getRow() + dir},
         {square.getCol() + 1, square.getRow() + dir}
@@ -151,7 +151,7 @@ bool Piece::kingSafe(Move m){
         if (colour == 'w' && cpy[i] == 'K') king = Position{i%8, i/8};
     }
 
-    std::cout << "King: " << king << " and " << m << '\n';
+    //std::cout << "King: " << king << " and Kingsafe: " << !charAttack(king, cpy) << "and "<< m << '\n';
 
     return !charAttack(king, cpy);
 

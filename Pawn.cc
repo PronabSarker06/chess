@@ -36,7 +36,7 @@ std::vector<Move> Pawn::getLegalMoves() {
             if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
         } else { 
             Move forward1 = {position, f1pos, this, nullptr, '0'};
-            std::cout << "Kingsafe? " << kingSafe(forward1) << '\n';
+            //std::cout << "Kingsafe? " << kingSafe(forward1) << '\n';
             if (kingSafe(forward1)) result.emplace_back(forward1);
         }
     }
@@ -44,7 +44,7 @@ std::vector<Move> Pawn::getLegalMoves() {
     //try moving up 2
     //only if first move, can go up 2, check nothing blocks
     Position f2pos = {position.getCol(), position.getRow() + 2 * colourFactor}; // add promo (setup can have a pawn promote on first move)
-    if (!hasMoved && f2pos.valid() && bptr->getDisplayGrid()[f2pos.to1D()] == '0'){
+    if (!hasMoved && f2pos.valid() && bptr->getDisplayGrid()[f2pos.to1D()] == '0' && bptr->getDisplayGrid()[f1pos.to1D()] == '0'){
         if (position.getRow() == (colour == 'b' ? 5 : 2)) {
             Move knightPromo = {position, f2pos, this, nullptr, 'N'}; // promo moves
             Move bishopPromo = {position, f2pos, this, nullptr, 'B'}; 
@@ -71,10 +71,10 @@ std::vector<Move> Pawn::getLegalMoves() {
             Move rookPromo = {position, clpos, this, p, 'R'}; 
             Move queenPromo = {position, clpos, this, p, 'Q'}; 
 
+            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
             if (kingSafe(knightPromo)) result.emplace_back(knightPromo);
             if (kingSafe(bishopPromo)) result.emplace_back(bishopPromo);
             if (kingSafe(rookPromo)) result.emplace_back(rookPromo);
-            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
         } else { 
             Move capleft = {position, clpos, this, p, '0'};
             if (kingSafe(capleft)) result.emplace_back(capleft);
@@ -91,10 +91,10 @@ std::vector<Move> Pawn::getLegalMoves() {
             Move rookPromo = {position, crpos, this, p, 'R'}; 
             Move queenPromo = {position, crpos, this, p, 'Q'}; 
 
+            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
             if (kingSafe(knightPromo)) result.emplace_back(knightPromo);
             if (kingSafe(bishopPromo)) result.emplace_back(bishopPromo);
             if (kingSafe(rookPromo)) result.emplace_back(rookPromo);
-            if (kingSafe(queenPromo)) result.emplace_back(queenPromo);
         } else { 
             Move capright = {position, crpos, this, p, '0'};
             if (kingSafe(capright)) result.emplace_back(capright);

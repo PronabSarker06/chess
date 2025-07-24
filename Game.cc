@@ -52,7 +52,7 @@ void Game::setup() {
             int row;
             iss >> col >> row;
             Position pos {col - 'a', 8 - row};
-            std::cout << pos << '\n';
+            //std::cout << pos << '\n';
             if (pos.valid()){
                 S.removePiece(pos);
             }
