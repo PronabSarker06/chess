@@ -17,7 +17,7 @@ Move lv1Move(Board& b, char colour) { // finds first piece of same colour in gri
         gridIndex = gridDist(gen);
 
         auto piecePtr = grid[gridIndex].get();
-        if (piecePtr && !piecePtr->getLegalMoves().empty()) {
+        if (piecePtr && piecePtr->getColour() == colour && !piecePtr->getLegalMoves().empty()) {
             break;
         }
     }

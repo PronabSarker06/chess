@@ -49,7 +49,7 @@ int readPlayer (std::string& s, PLAYERTYPE& player, ComputerPlayer& compPlayer, 
     }
 } 
 
-void scoreUpdate(int condition, int& whiteScore, int& blackScore, Game& G) {
+void scoreUpdate(int condition, double& whiteScore, double& blackScore, Game& G) {
     //std::cout << "condition: " << condition << '\n';
     if (condition) {
         if (condition == 2) {
@@ -74,7 +74,7 @@ int main () {
 
     std::cout << "Welcome to Chess :D" << std::endl;
 
-    int whiteScore = 0, blackScore = 0;
+    double whiteScore = 0, blackScore = 0;
     PLAYERTYPE white = PLAYERTYPE::HUMAN;
     PLAYERTYPE black = PLAYERTYPE::HUMAN;
     ComputerPlayer whiteComp (1, 'w'), blackComp (1, 'b');
