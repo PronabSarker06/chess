@@ -44,7 +44,7 @@ class Board {
         Piece* getPieceAt(const Position pos);
         std::vector<char>& getDisplayGrid();
         void setDisplayGrid(Position pos, char c);
-        int Board::isCheckStalemate(char colour, bool& inCheck) {
+        int isCheckStalemate(char colour, bool& inCheck);
 };
 
 #endif
