@@ -1,14 +1,34 @@
 #include "ComputerPlayer.h" 
+#include <random>
 
 ComputerPlayer::ComputerPlayer(int l, char c) : level{l}, colour{c}, moveCount{0} {};
 
 Move lv1Move(Board& b, char colour) { // finds first piece of same colour in grid, returns first legal move
-    for (size_t i = 0; i < b.getGrid().size(); ++i) { 
-        if (b.getGrid()[i].get()->getColour() == colour) { 
-            Piece* p = b.getGrid()[i].get();
-            if (p->getLegalMoves().size() > 0) return p->getLegalMoves()[0];
+
+    std::random_device rd;
+    std::mt19937 gen(rd());
+
+    int gridIndex;
+    auto& grid = b.getGrid();
+
+    // Keep picking until we find a piece with at least one legal move
+    while (true) {
+        std::uniform_int_distribution<> gridDist(0, grid.size() - 1);
+        gridIndex = gridDist(gen);
+
+        auto piecePtr = grid[gridIndex].get();
+        if (piecePtr && !piecePtr->getLegalMoves().empty()) {
+            break;
         }
     }
+
+    // Now pick a random legal move from that piece
+    const auto& legalMoves = grid[gridIndex]->getLegalMoves();
+    std::uniform_int_distribution<> moveDist(0, legalMoves.size() - 1);
+    int moveIndex = moveDist(gen);
+
+    return grid[gridIndex].get()->getLegalMoves()[moveIndex];
+
 }
 
 Move lv2Move(Board& b, char colour) { 
