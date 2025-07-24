@@ -385,9 +385,9 @@ std::vector<char>& Board::getDisplayGrid() {
     return displayGrid;
 }
 
-int Board::isCheckStalemate(char colour) {
+int Board::isCheckStalemate(char colour, bool& inCheck) {
     Position kingPos = (colour == 'w') ? getWhiteKing() : getBlackKing();
-    bool inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
+    inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
     for (const auto& piece : grid) {
         if (piece->getColour() == colour && piece->getLegalMoves().size() != 0) {
             //std::cout << piece->getLegalMoves()[0] << std::endl;
