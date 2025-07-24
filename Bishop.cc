@@ -21,12 +21,14 @@ std::vector<Move> Bishop::getLegalMoves() {
             Position cur = {position.getCol() + hor, position.getRow() + vert};
             //push in direction while blank and valid
             while (cur.valid() && bptr->getDisplayGrid()[cur.to1D()] == '0'){
-                result.push_back(Move{position, cur, this, nullptr, '0'});
+                Move m {position, cur, this, nullptr, '0'};
+                if (kingSafe(m)) result.push_back(m);
                 cur = {cur.getCol() + hor, cur.getRow() + vert};
             }
             //If we can capture, ie not same color
             if (cur.valid() && bptr->getPieceAt(cur) && bptr->getPieceAt(cur)->getColour() != colour){
-                result.push_back(Move{position, cur, this, bptr->getPieceAt(cur), '0'});
+                Move m {position, cur, this, bptr->getPieceAt(cur), '0'};
+                if (kingSafe(m)) result.push_back(m);
             }
         }
     }

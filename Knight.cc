@@ -26,12 +26,12 @@ std::vector<Move> Knight::getLegalMoves() {
         if (to.valid()) {
             // Check if destination is empty
             if (bptr->getDisplayGrid()[to.to1D()] == '0') {
-                result.push_back(Move{position, to, this, nullptr});
+                if (kingSafe({position, to, this, nullptr})) result.push_back(Move{position, to, this, nullptr});
             }
             // Check if destination is an enemy piece
             else if (bptr->getPieceAt(to) && 
             this->colour != bptr->getPieceAt(to)->getColour()) {
-                result.push_back(Move{position, to, this, bptr->getPieceAt(to)});
+                if (kingSafe({position, to, this, bptr->getPieceAt(to)})) result.push_back(Move{position, to, this, bptr->getPieceAt(to)});
             }
         }
     }

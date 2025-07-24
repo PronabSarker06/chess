@@ -20,12 +20,12 @@ std::vector<Move> Rook::getLegalMoves() {
             if (abs(vert) + abs(hor) != 1) { continue; } //skip directions that are not in one direction
             Position cur = {position.getCol() + hor, position.getRow() + vert};
             while (cur.valid() && bptr->getDisplayGrid()[cur.to1D()] == '0'){
-                result.push_back(Move{position, cur, this, nullptr, '0'}); //valid move
+                if (kingSafe({position, cur, this, nullptr, '0'})) result.push_back(Move{position, cur, this, nullptr, '0'}); //valid move
                 cur = {cur.getCol() + hor, cur.getRow() + vert};
             }
             //Attacking a piece upwards
             if (cur.valid() && bptr->getPieceAt(cur)->getColour() != colour){
-                result.push_back(Move{position, cur, this, bptr->getPieceAt(cur), '0'});
+                if (kingSafe({position, cur, this, bptr->getPieceAt(cur), '0'})) result.push_back(Move{position, cur, this, bptr->getPieceAt(cur), '0'});
             }
         }
     }    

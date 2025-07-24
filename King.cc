@@ -32,7 +32,7 @@ std::vector<Move> King::getLegalMoves() {
             // Destination can only be empty or an enemy piece
             if (bptr->getPieceAt(to) == nullptr
             || this->colour != bptr->getPieceAt(to)->getColour()) {
-                result.emplace_back(this->position, to, this, bptr->getPieceAt(to));
+                if (kingSafe({this->position, to, this, bptr->getPieceAt(to)})) result.emplace_back(this->position, to, this, bptr->getPieceAt(to));
             }
         }
     }
@@ -53,7 +53,7 @@ std::vector<Move> King::getLegalMoves() {
                 !bptr->isAttacked(Position{3, row}, enemyColour)) {
 
                 Position to = {2, row}; // king ends up on column 2
-                result.emplace_back(position, to, this, nullptr); // add move
+                if (kingSafe({position, to, this, nullptr})) result.emplace_back(position, to, this, nullptr); // add move
             }
         }
 
@@ -66,7 +66,7 @@ std::vector<Move> King::getLegalMoves() {
                 !bptr->isAttacked(Position{6, row}, enemyColour)) { // all true? 
 
                 Position to = {6, row}; // king ends up on column 6
-                result.emplace_back(position, to, this, nullptr); // add move
+                if (kingSafe({position, to, this, nullptr})) result.emplace_back(position, to, this, nullptr); // add move
             }
         }
     }

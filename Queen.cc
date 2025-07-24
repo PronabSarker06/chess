@@ -25,13 +25,13 @@ std::vector<Move> Queen::getLegalMoves() {
             while (to.valid()) {
                 // Check if destination is empty
                 if (bptr->getDisplayGrid()[to.to1D()] == '0') {
-                    result.push_back(Move{position, to, this, nullptr});
+                    if (kingSafe({position, to, this, nullptr})) result.push_back(Move{position, to, this, nullptr});
                     to = {to.getCol() + col_change, to.getRow() + row_change};
                     continue;
                 }
                 // Check if destination is enemy piece
                 if (bptr->getPieceAt(to) && this->colour != bptr->getPieceAt(to)->getColour()) {
-                    result.push_back(Move{position, to, this, bptr->getPieceAt(to)});
+                    if (kingSafe({position, to, this, bptr->getPieceAt(to)})) result.push_back(Move{position, to, this, bptr->getPieceAt(to)});
                 }
                 break;
             }
