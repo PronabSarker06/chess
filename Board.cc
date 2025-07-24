@@ -2,7 +2,7 @@
 
 #define BOARD_SIZE 64
 
-const char preset[BOARD_SIZE] {
+const std::vector<char> preset {
     'r', 'n', 'b', 'q', 'k', 'b', 'n', 'r', // row 8
     'p', 'p', 'p', 'p', 'p', 'p', 'p', 'p',
     '0', '0', '0', '0', '0', '0', '0', '0',
