@@ -7,7 +7,6 @@
 class Knight : public Piece { 
     public:
         Knight(char, Position, Board*);
-        bool canMove(Move) override;
         std::vector<Move> getLegalMoves() override;
 };
 

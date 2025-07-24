@@ -18,7 +18,6 @@ class Piece {
     public:
     
         //Pure virtual methods
-        virtual bool canMove(Move) = 0;
         virtual std::vector<Move> getLegalMoves() = 0;
 
         Piece(char c, char t, Position p, Board* bptr);

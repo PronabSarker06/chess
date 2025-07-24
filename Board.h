@@ -28,23 +28,26 @@ class Board {
     Position black_king{4, 0};
 
     public:
-        Board();
         bool makeMove(Move m);
         void display();
         void initGraphics();
+        void drawTile(Position pos, char piece = '0');
+        bool isAttacked(Position square, char enemy_colour);
+        int isCheckStalemate(char colour, bool& inCheck);
+
+        Board();
+
         std::stack<Move>& getHistory();
         Position getWhiteKing();
-        void setWhiteKing(Position p);
         Position getBlackKing();
-        void setBlackKing(Position p);
-        void drawTile(Position pos, char piece = '0');
-        void castle(King &k, Rook &r);
-        bool isAttacked(Position square, char enemy_colour);
         std::vector<std::unique_ptr<Piece>>& getGrid () { return grid; }
         Piece* getPieceAt(const Position pos);
         std::vector<char>& getDisplayGrid();
+
+        void setWhiteKing(Position p);
+        void setBlackKing(Position p);
         void setDisplayGrid(Position pos, char c);
-        int isCheckStalemate(char colour, bool& inCheck);
+
 };
 
 #endif

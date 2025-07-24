@@ -16,7 +16,6 @@ class Game {
     bool gameActive = false;
 
     public:
-        Board& getBoard();
         void startGame();
         void setup();
         void resign();
@@ -24,10 +23,12 @@ class Game {
         void makeMove(char, char, char, char, char);
         void display();
         bool gameOn();
-        char getTurn();
         void flipTurn();
 
         Game();
+
+        Board& getBoard();
+        char getTurn();
 };
 
 #endif

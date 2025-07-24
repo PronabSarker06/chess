@@ -5,16 +5,6 @@
 Pawn::Pawn(char c, Position p, Board* bptr) 
     : Piece(c, 'p', p, bptr) {}
 
-void promote() {
-
-}
-
-bool Pawn::canMove(Move) {
-
-    return true;
-    
-}
-
 std::vector<Move> Pawn::getLegalMoves() {
 
     std::vector<Move> result;
