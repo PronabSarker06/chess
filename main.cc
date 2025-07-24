@@ -66,6 +66,7 @@ void scoreUpdate(int condition, int& whiteScore, int& blackScore, Game& G) {
             blackScore += 0.5;
             whiteScore += 0.5;
         }
+        G.display();
     }
 }
 
