@@ -291,7 +291,7 @@ bool Board::isAttacked(Position square, char enemy_colour) {
             Piece* p = getPieceAt(to);
             if (p && p->getColour() == enemy_colour) {
                 char type = p->getType();
-                if ((enemy_colour == 'w' && type == 'N')
+                if ((enemy_colour == 'w' && type == 'n')
                 || (enemy_colour == 'b' && type == 'n')) {
                     return true;
                 }
@@ -313,11 +313,14 @@ bool Board::isAttacked(Position square, char enemy_colour) {
                 Piece* p = getPieceAt(to);
                 if (!p) continue; 
                 if (p->getColour() == enemy_colour) {
+                                    
                     char type = p->getType();
                     bool isDiagonal = (abs(row_change) == abs(col_change));
                     if (enemy_colour == 'w') {
-                        if ((isDiagonal && (type == 'B' || type == 'Q'))
-                        || (!isDiagonal && (type == 'R' || type == 'Q'))) {
+                        std::cout << "checking: " << to << " piece: " << p->getType() << '\n';
+                        if ((isDiagonal && (type == 'b' || type == 'q'))
+                        || (!isDiagonal && (type == 'r' || type == 'q'))) {
+                            std::cout << "HIT";
                             return true;
                         }
                     } else {
@@ -340,7 +343,7 @@ bool Board::isAttacked(Position square, char enemy_colour) {
     for (Position p : pawns) {
         if (p.valid()) {
             if (getPieceAt(p) && getPieceAt(p)->getColour() == enemy_colour) {
-                if ((enemy_colour == 'w' && getPieceAt(p)->getType() == 'P')
+                if ((enemy_colour == 'w' && getPieceAt(p)->getType() == 'p')
                 || (enemy_colour == 'b' && getPieceAt(p)->getType() == 'p')) {
                     return true;
                 }
@@ -361,7 +364,7 @@ bool Board::isAttacked(Position square, char enemy_colour) {
             if (to.valid()) {
                 Piece* p = getPieceAt(to);
                 if (p && p->getColour() == enemy_colour) {
-                    if ((p->getType() == 'K') || (p->getType() == 'k')) {
+                    if (p->getType() == 'k') {
                         return true;
                     }
                 }
@@ -385,9 +388,9 @@ std::vector<char>& Board::getDisplayGrid() {
     return displayGrid;
 }
 
-int Board::isCheckStalemate(char colour) {
+int Board::isCheckStalemate(char colour, bool& inCheck) {
     Position kingPos = (colour == 'w') ? getWhiteKing() : getBlackKing();
-    bool inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
+    inCheck = isAttacked(kingPos, (colour == 'w') ? 'b' : 'w');
     for (const auto& piece : grid) {
         if (piece->getColour() == colour && piece->getLegalMoves().size() != 0) {
             //std::cout << piece->getLegalMoves()[0] << std::endl;
@@ -396,4 +399,8 @@ int Board::isCheckStalemate(char colour) {
     }
     // No legal moves found
     return inCheck ? 2 : 1;  // 2 if checkmate, 1 if stalemate
+}
+
+void Board::setDisplayGrid(Position pos, char c) {
+    displayGrid[pos.to1D()] = c;
 }

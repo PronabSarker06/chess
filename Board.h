@@ -43,7 +43,8 @@ class Board {
         std::vector<std::unique_ptr<Piece>>& getGrid () { return grid; }
         Piece* getPieceAt(const Position pos);
         std::vector<char>& getDisplayGrid();
-        int isCheckStalemate(char moving_colour);
+        void setDisplayGrid(Position pos, char c);
+        int Board::isCheckStalemate(char colour, bool& inCheck) {
 };
 
 #endif

@@ -23,6 +23,14 @@ void Game::setup() {
 
     Setup S {&board};
 
+    //Clear board
+    for (int i = 0; i < 8; i++){
+            S.removePiece({i, 0});
+            S.removePiece({i, 1});
+            S.removePiece({i, 6});
+            S.removePiece({i, 7});
+    }
+
     std::string line;
 
     while (getline(std::cin, line)) {
@@ -68,7 +76,7 @@ void Game::setup() {
             else std::cout << "Not a valid colour" << std::endl;
         }
         else if (cmd == "done"){
-            if (true) break;
+            if (S.valid()) break;
         }
         else{
             std::cout << "Error, please enter a valid command" << std::endl;

@@ -93,7 +93,11 @@ int main () {
                 G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
-                int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                bool inCheck = false;
+                int condition = G.getBoard().isCheckStalemate(G.getTurn(), inCheck);
+                if (inCheck && condition == 0) {
+                    std::cout << ((G.getTurn() == 'w') ? "White" : "Black") << " is in check." << std::endl;
+                }
                 scoreUpdate(condition, whiteScore, blackScore, G);
                 if (condition != 0) break;
             }
@@ -101,7 +105,11 @@ int main () {
                 G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
                 G.display();
                 G.flipTurn();
-                int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                bool inCheck = false;
+                int condition = G.getBoard().isCheckStalemate(G.getTurn(), inCheck);
+                if (inCheck && condition == 0) {
+                    std::cout << ((G.getTurn() == 'w') ? "White" : "Black") << " is in check." << std::endl;
+                }
                 scoreUpdate(condition, whiteScore, blackScore, G);
                 if (condition != 0) break;
             }
@@ -126,7 +134,11 @@ int main () {
                     iss >> promo;
                     G.makeMove(fCol, fRow, tCol, tRow, promo);
                     //std::cout << G.getTurn() << "'s turn \n";
-                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    bool inCheck = false;
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn(), inCheck);
+                    if (inCheck && condition == 0) {
+                        std::cout << ((G.getTurn() == 'w') ? "White" : "Black") << " is in check." << std::endl;
+                    }
                     scoreUpdate(condition, whiteScore, blackScore, G);
                     if (condition != 0) break;
                 }
@@ -136,7 +148,10 @@ int main () {
                 if (G.gameOn()){
                     std::cout << "Error: A game is currently active, please finish the game first" << std::endl;
                 }
-                else G.setup();
+                else{
+                    std::cout << "Setup mode entered, please enter setup commands!" << std::endl;
+                    G.setup();
+                }
             }
             else if (cmd == "resign"){
                 if (G.getTurn() == 'w') blackScore++;
@@ -159,7 +174,11 @@ int main () {
                     G.getBoard().makeMove(whiteComp.cMove(G.getBoard()));
                     G.display();
                     G.flipTurn();
-                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    bool inCheck = false;
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn(), inCheck);
+                    if (inCheck && condition == 0) {
+                        std::cout << ((G.getTurn() == 'w') ? "White" : "Black") << " is in check." << std::endl;
+                    }
                     scoreUpdate(condition, whiteScore, blackScore, G);
                     if (condition != 0) break;
                 }
@@ -167,7 +186,11 @@ int main () {
                     G.getBoard().makeMove(blackComp.cMove(G.getBoard()));
                     G.display();
                     G.flipTurn();
-                    int condition = G.getBoard().isCheckStalemate(G.getTurn());
+                    bool inCheck = false;
+                    int condition = G.getBoard().isCheckStalemate(G.getTurn(), inCheck);
+                    if (inCheck && condition == 0) {
+                        std::cout << ((G.getTurn() == 'w') ? "White" : "Black") << " is in check." << std::endl;
+                    }
                     scoreUpdate(condition, whiteScore, blackScore, G);
                     if (condition != 0) break;
                 }
