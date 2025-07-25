@@ -31,6 +31,6 @@ char Move::getPromoType() {
 }
 
 std::ostream& operator<< (std::ostream& out, const Move& m) {
-    out << "Move: " << m.from << ", " << m.to << ", " << m.promotionType;
+    out << "Move: " << m.from << ", " << m.to << (m.promotionType == '0' ? "" : ", Promotion to: " + m.promotionType);
     return out;
 }

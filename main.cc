@@ -68,7 +68,7 @@ void scoreUpdate(int condition, double& whiteScore, double& blackScore, Game& G)
     }
 }
 
-int main () {
+int main (int argc, char** argv) {
 
     std::cout << "Welcome to Chess :D" << std::endl;
 
@@ -122,11 +122,14 @@ int main () {
             std::string cmd;
             iss >> cmd;
             if (cmd == "game") {
-                std::string player1 = "", player2 = "";
-                iss >> player1 >> player2;
-                if (readPlayer(player1, white, whiteComp, 'w') == FAIL) std::cout << "Invalid white player" << std::endl;
-                else if (readPlayer(player2, black, blackComp, 'b') == FAIL) std::cout << "Invalid black player" << std::endl;
-                else G.startGame();
+                if (!G.gameOn()){
+                    std::string player1 = "", player2 = "";
+                    iss >> player1 >> player2;
+                    if (readPlayer(player1, white, whiteComp, 'w') == FAIL) std::cout << "Invalid white player" << std::endl;
+                    else if (readPlayer(player2, black, blackComp, 'b') == FAIL) std::cout << "Invalid black player" << std::endl;
+                    else G.startGame();
+                }
+                else std::cout << "A game is active, please resign or finish!" << std::endl;
             }
             else if (cmd == "move"){
                 if (G.gameOn()){
@@ -155,14 +158,34 @@ int main () {
                 }
             }
             else if (cmd == "resign"){
-                if (G.getTurn() == 'w') {
-                    std::cout << "Black wins!" << std::endl;
-                    ++blackScore;
-                } else {
-                    std::cout << "White wins!" << std::endl;
-                    ++whiteScore;
+                if (G.gameOn()){
+                    if (G.getTurn() == 'w') {
+                        std::cout << "Black wins!" << std::endl;
+                        ++blackScore;
+                    } else {
+                        std::cout << "White wins!" << std::endl;
+                        ++whiteScore;
+                    }
+                    break;
                 }
-                break;
+                else std::cout << "No active game. Please start a game using \"game <whiteplayer> <blackplayer>\"" << std::endl;
+            }
+            else if (cmd == "history" && argc > 1 && std::string(argv[1]) == "-enhancement") {
+                if (G.gameOn()){
+                    std::stack<Move> temp;
+                    auto copy = G.getBoard().getHistory();
+                    // Reverse the stack
+                    while (!copy.empty()) {
+                        temp.push(copy.top());
+                        copy.pop();
+                    }
+                    // Print in correct order
+                    while (!temp.empty()) {
+                        std::cout << temp.top() << std::endl;
+                        temp.pop();
+                    }
+                }
+                else std::cout << "No active game. Please start a game using \"game <whiteplayer> <blackplayer>\"" << std::endl;
             }
             else{
                 //Invalid commands
